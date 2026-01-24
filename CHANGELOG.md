@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.2.0](https://github.com/timelessco/recollect-extension/compare/0.1.2...0.2.0) (2026-01-24)
+
+### Features
+
+* **01-01:** add environment configuration system ([f6b2a97](https://github.com/timelessco/recollect-extension/commit/f6b2a97f9aa23fefa6234d30f970b617f489d3fc))
+* **01-01:** configure manifest cookies permission ([fc6c4c8](https://github.com/timelessco/recollect-extension/commit/fc6c4c8d34eaf301a1fc3deecbdd13c810840270))
+* **02-01:** add auth utility modules for types, JWT, and cookies ([6228ea5](https://github.com/timelessco/recollect-extension/commit/6228ea57b29cba80f2cb6ba5173f1bcc0c15117a))
+* **02-01:** add main auth API with checkAuthState and getAuthDebugInfo ([db5c05b](https://github.com/timelessco/recollect-extension/commit/db5c05b7e9ab9b2213e65f860c13ec233b45debf))
+* **03-01:** add popup view components for auth states ([9857166](https://github.com/timelessco/recollect-extension/commit/985716631cd8664233d14f060af086efa93d77c3))
+* **03-01:** add UI primitives and React pattern libraries ([fb01dae](https://github.com/timelessco/recollect-extension/commit/fb01daeba8677e5b630ad021aff14dcb50469ccd))
+* **03-02:** integrate auth state with popup UI ([5e2dec2](https://github.com/timelessco/recollect-extension/commit/5e2dec22a90e2b5a40435428e6250ab11f087e2b))
+
+### Bug Fixes
+
+* **03-02:** verification fixes for popup UI and auth detection ([818f975](https://github.com/timelessco/recollect-extension/commit/818f97525ae01c1b4df7a5ffdcbe2a5d9e152655))
+* **04-01:** use all_urls permission for bookmark functionality ([f9bf0e8](https://github.com/timelessco/recollect-extension/commit/f9bf0e85e4b895e865f48843bf47f93d03dc53d3))
+
+### Documentation
+
+* **04-01:** add verification checklist for extension builds ([89dd47c](https://github.com/timelessco/recollect-extension/commit/89dd47c8edf52416ab8c81be3f77af866e90a428))
+* **04-01:** update verification checklist for all_urls permission ([f928195](https://github.com/timelessco/recollect-extension/commit/f9281955e3a2fdbf657c5d75e666bd4ddf10c640))
+* rename verification.md to VERIFICATION.md ([f87e7a9](https://github.com/timelessco/recollect-extension/commit/f87e7a9d9604d571706123eea7caeab55a30c73c))
+
+### Code Refactoring
+
+* **auth:** merge getAuthDebugInfo into saveDebugLog ([e10589d](https://github.com/timelessco/recollect-extension/commit/e10589d9b92b8cb6da6225f8f2d00a83909e357d))
+
 ## [0.1.2](https://github.com/timelessco/recollect-extension/compare/0.1.1...0.1.2) (2026-01-24)
 
 ### Chores
