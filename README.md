@@ -56,10 +56,10 @@ This example demonstrates how to integrate React 19+, Tailwind CSS v4+, and shad
    import tailwindcss from "@tailwindcss/vite";
    // See https://wxt.dev/api/config.html
    export default defineConfig({
-     modules: ["@wxt-dev/module-react"],
-     vite: () => ({
-       plugins: [tailwindcss()],
-     }),
+   	modules: ["@wxt-dev/module-react"],
+   	vite: () => ({
+   		plugins: [tailwindcss()],
+   	}),
    });
    ```
 
@@ -84,12 +84,12 @@ This example demonstrates how to integrate React 19+, Tailwind CSS v4+, and shad
    ```html
    <!doctype html>
    <html>
-     <head>
-       <meta charset="UTF-8" />
-       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-       <link href="@/assets/tailwind.css" rel="stylesheet" />
-     </head>
-     <body></body>
+   	<head>
+   		<meta charset="UTF-8" />
+   		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   		<link href="@/assets/tailwind.css" rel="stylesheet" />
+   	</head>
+   	<body></body>
    </html>
    ```
 
@@ -125,15 +125,15 @@ This example demonstrates how to integrate React 19+, Tailwind CSS v4+, and shad
 
    // See https://wxt.dev/api/config.html
    export default defineConfig({
-     modules: ["@wxt-dev/module-react"],
-     vite: () => ({
-       plugins: [tailwindcss()],
-       resolve: {
-         alias: {
-           "@": path.resolve(__dirname, "./"), // or "./src" if using src directory
-         },
-       },
-     }),
+   	modules: ["@wxt-dev/module-react"],
+   	vite: () => ({
+   		plugins: [tailwindcss()],
+   		resolve: {
+   			alias: {
+   				"@": path.resolve(__dirname, "./"), // or "./src" if using src directory
+   			},
+   		},
+   	}),
    });
    ```
 
@@ -147,12 +147,12 @@ This example demonstrates how to integrate React 19+, Tailwind CSS v4+, and shad
     import { defineConfig } from "vite";
     import tailwindcss from "@tailwindcss/vite";
     export default defineConfig({
-      plugins: [react(), tailwindcss()],
-      resolve: {
-        alias: {
-          "@": path.resolve(__dirname, "./"), // or "./src" if using src directory
-        },
-      },
+    	plugins: [react(), tailwindcss()],
+    	resolve: {
+    		alias: {
+    			"@": path.resolve(__dirname, "./"), // or "./src" if using src directory
+    		},
+    	},
     });
     ```
 

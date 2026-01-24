@@ -1,20 +1,21 @@
 {
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "extends": [
-    "./node_modules/ultracite/config/oxlint/core/.oxlintrc.json",
-    "./node_modules/ultracite/config/oxlint/react/.oxlintrc.json"
-  ],
-  "ignorePatterns": [
-    "src/components/ui/**",
-    "*.config.ts",
-    "*.config.js",
-    "knip.ts",
-    ".release-it.ts"
-  ],
-  "rules": {
-    "func-style": ["error", "declaration"],
-    "import/consistent-type-specifier-style": "off",
-    "import/no-default-export": "error",
-    "import/no-cycle": ["error", { "maxDepth": 3 }]
-  }
+	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"extends": [
+		"./node_modules/ultracite/config/oxlint/core/.oxlintrc.json",
+		"./node_modules/ultracite/config/oxlint/react/.oxlintrc.json"
+	],
+	"ignorePatterns": [
+		"src/components/ui/**",
+		"CHANGELOG.md",
+		"*.config.ts",
+		"*.config.js",
+		"knip.ts",
+		".release-it.ts"
+	],
+	"rules": {
+		"func-style": ["error", "declaration"],
+		"import/consistent-type-specifier-style": "off",
+		"import/no-default-export": "error",
+		"import/no-cycle": ["error", { "maxDepth": 3 }]
+	}
 }
