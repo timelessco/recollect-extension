@@ -18,9 +18,11 @@ Both builds should include:
 ```json
 {
 	"permissions": ["cookies", "storage"],
-	"host_permissions": ["http://localhost/*", "https://app.recollect.so/*"]
+	"host_permissions": ["<all_urls>"]
 }
 ```
+
+> **Note:** `<all_urls>` is required because this is a bookmark extension that operates on any site the user visits.
 
 ### Loading Extension in Chrome
 
@@ -184,7 +186,9 @@ Occurs if popup is open during extension reload. Close and reopen popup.
 
 1. Verify you're logged into the correct domain
 2. Check if cookies are blocked (browser settings)
-3. Verify cookie names in service worker: `await chrome.cookies.getAll({ domain: 'localhost' })`
+3. Verify cookie names in service worker:
+   - Dev: `await chrome.cookies.getAll({ url: 'http://localhost:3000' })`
+   - Prod: `await chrome.cookies.getAll({ url: 'https://app.recollect.so' })`
 4. Ensure session hasn't expired (log out and back in)
 
 ### Auth State Not Updating
