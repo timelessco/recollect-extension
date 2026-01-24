@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.2](https://github.com/timelessco/recollect-extension/compare/0.1.1...0.1.2) (2026-01-24)
+
+### Chores
+
+* **config:** 🧹 remove obsolete oxfmt configuration file ([3f2e832](https://github.com/timelessco/recollect-extension/commit/3f2e832d178b90cb193da6e4478ec75c06452afc))
+
 ## [0.1.1](https://github.com/timelessco/recollect-extension/compare/0.1.0...0.1.1) (2026-01-24)
 
 ### Styles
