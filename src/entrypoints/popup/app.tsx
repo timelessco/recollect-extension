@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
+
 import reactLogo from "@/assets/react.svg";
-import wxtLogo from "/wxt.svg";
+import wxtLogo from "@/assets/wxt.svg";
 import { Button } from "@/components/ui/button";
 
 function App() {
   const [count, setCount] = useState(0);
+
+  const handleClick = useCallback(() => {
+    setCount((prev) => prev + 1);
+  }, []);
 
   return (
     <div className="w-80 p-4 space-y-4 bg-white rounded-md shadow-md">
@@ -22,11 +27,9 @@ function App() {
       </h1>
 
       <div className="bg-gray-100 p-4 rounded-md shadow-inner flex flex-col items-center">
-        <Button onClick={() => setCount((count) => count + 1)}>
-          Count is {count}
-        </Button>
+        <Button onClick={handleClick}>Count is {count}</Button>
         <p className="text-sm mt-2 text-gray-600 text-center">
-          Edit <code>src/App.tsx</code> and save to test HMR
+          Edit <code>src/app.tsx</code> and save to test HMR
         </p>
       </div>
 
