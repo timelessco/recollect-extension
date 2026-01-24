@@ -1,0 +1,63 @@
+{
+  // Quality of life improvements
+  // Git
+  "git.branchProtection": ["main"],
+  "githubPullRequests.ignoredPullRequestBranches": ["main"],
+  "typescript.tsdk": "node_modules/typescript/lib",
+
+  // Files Customization
+  "files.associations": {
+    "*.svg": "html",
+    ".env.*": "dotenv",
+    "*.json": "jsonc",
+    "package.json": "json",
+    ".all-contributorsrc": "json",
+    "*.tsx": "typescriptreact",
+    "*.jsx": "javascriptreact"
+  },
+
+  // Editor Formatters & Linters.
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "emmet.showExpandedAbbreviation": "never",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "explicit",
+    "source.organizeImports.biome": "explicit",
+    "source.fixAll.oxc": "explicit"
+  },
+  "oxc.fmt.configPath": ".oxfmtrc.json",
+  "oxc.typeAware": true,
+
+  // Language based settings
+
+  // CSS
+  "css.validate": false,
+  "css.lint.unknownAtRules": "ignore",
+
+  // Markdown
+  "[markdown]": {
+    "editor.quickSuggestions": {
+      "comments": "on",
+      "strings": "on",
+      "other": "on"
+    }
+  },
+
+  // Must have extensions config
+
+  // Tailwind CSS
+  // Detect additional class regex
+  "tailwindCSS.experimental.classRegex": [
+    // For const/let/var string assignments like: const baseClasses = "tw-..."
+    "(?:const|let|var)\\s+\\w+\\s*=\\s*[\"'`]([^\"'`]*)[\"'`]"
+  ],
+  // Enable features in languages that are not supported by default. Add a mapping here between the new language and an already supported language.
+  "tailwindCSS.includeLanguages": {
+    "plaintext": "html",
+    "typescript": "javascript",
+    "typescriptreact": "javascript",
+    "javascriptreact": "javascript"
+  },
+  "tailwindCSS.classFunctions": ["cn"]
+}

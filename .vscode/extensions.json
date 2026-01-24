@@ -1,0 +1,21 @@
+{
+  "recommendations": [
+    // Oxc is an opinionated code formatter.
+    "oxc.oxc-vscode",
+
+    // Frontend
+    "bradlc.vscode-tailwindcss",
+
+    // REST Client allows you to send HTTP request and view the response in Visual Studio Code directly.
+    // Makes use of `.http` files
+    "humao.rest-client",
+
+    // Quality of life extensions
+    "yoavbls.pretty-ts-errors",
+    "aaron-bond.better-comments",
+    "formulahendry.auto-close-tag",
+    "formulahendry.auto-rename-tag",
+    "christian-kohler.npm-intellisense",
+    "christian-kohler.path-intellisense"
+  ]
+}
