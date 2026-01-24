@@ -9,7 +9,6 @@
         "@fontsource-variable/inter": "5.2.8",
         "@react-hookz/web": "^25.2.0",
         "@tailwindcss/vite": "4.1.18",
-        "better-all": "^0.0.5",
         "class-variance-authority": "0.7.1",
         "clsx": "2.1.1",
         "lucide-react": "0.563.0",
@@ -588,8 +587,6 @@
     "basic-ftp": ["basic-ftp@5.1.0", "", {}, "sha512-RkaJzeJKDbaDWTIPiJwubyljaEPwpVWkm9Rt5h9Nd6h7tEXTJ3VB4qxdZBioV7JO5yLUaOKwz7vDOzlncUsegw=="],
 
     "before-after-hook": ["before-after-hook@4.0.0", "", {}, "sha512-q6tR3RPqIB1pMiTRMFcZwuG5T8vwp+vUvEG0vuI6B+Rikh5BfPp2fQ82c925FOs+b0lcFQ8CFrL+KbilfZFhOQ=="],
-
-    "better-all": ["better-all@0.0.5", "", {}, "sha512-m5T7MNB8Zyu1klrjaZIKBVfNHwnNkBB0/u+iy5bojdpGBkJMtswq83CzZOC1eMHkRCF+1D8Nsu9D/Zv8hea+zg=="],
 
     "bluebird": ["bluebird@3.7.2", "", {}, "sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg=="],
 

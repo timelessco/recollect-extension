@@ -79,19 +79,39 @@ function determineAuthState(authCookies: AuthCookie[]): AuthState {
 	return { isAuthenticated: true, ...parsed };
 }
 
+async function saveDebugLog(
+	durationMs: number,
+	authCookies: AuthCookie[],
+	result: AuthState
+): Promise<void> {
+	if (!config.isDev) {
+		return;
+	}
+
+	await browser.storage.local.set({
+		auth_debug: {
+			cookieCount: authCookies.length,
+			cookieNames: authCookies.map((c) => c.name),
+			durationMs: Math.round(durationMs),
+			result,
+			timestamp: new Date().toISOString(),
+		},
+	});
+}
+
 export async function checkAuthState(): Promise<AuthState> {
 	const startTime = performance.now();
+	let authCookies: AuthCookie[] = [];
 
 	try {
-		const authCookies = await fetchAuthCookies();
-		return determineAuthState(authCookies);
-	} catch (error) {
-		console.warn("[Auth] Failed to check auth state:", error);
-		return { isAuthenticated: false, reason: "error" };
-	} finally {
-		if (config.isDev) {
-			console.debug(`[Auth] Check took ${performance.now() - startTime}ms`);
-		}
+		authCookies = await fetchAuthCookies();
+		const result = determineAuthState(authCookies);
+		await saveDebugLog(performance.now() - startTime, authCookies, result);
+		return result;
+	} catch {
+		const errorResult: AuthState = { isAuthenticated: false, reason: "error" };
+		await saveDebugLog(performance.now() - startTime, authCookies, errorResult);
+		return errorResult;
 	}
 }
 

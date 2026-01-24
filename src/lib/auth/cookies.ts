@@ -26,22 +26,56 @@ export function combineChunks(
 	return chunks.length > 0 ? chunks.join("") : null;
 }
 
+function isSessionObject(
+	value: unknown
+): value is { access_token: string; refresh_token?: string } {
+	return (
+		typeof value === "object" &&
+		value !== null &&
+		"access_token" in value &&
+		typeof (value as Record<string, unknown>).access_token === "string"
+	);
+}
+
+function decodeValue(value: string): string {
+	if (value.startsWith("base64-")) {
+		return atob(value.slice(7));
+	}
+	return decodeURIComponent(value);
+}
+
+function extractFromObject(
+	parsed: unknown
+): { accessToken: string; refreshToken: string } | null {
+	if (!isSessionObject(parsed)) {
+		return null;
+	}
+	return {
+		accessToken: parsed.access_token,
+		refreshToken: parsed.refresh_token ?? "",
+	};
+}
+
+function extractFromArray(
+	parsed: unknown
+): { accessToken: string; refreshToken: string } | null {
+	if (!Array.isArray(parsed) || typeof parsed[0] !== "string") {
+		return null;
+	}
+	return {
+		accessToken: parsed[0],
+		refreshToken: typeof parsed[1] === "string" ? parsed[1] : "",
+	};
+}
+
 export function parseSessionCookie(
 	value: string
 ): { accessToken: string; refreshToken: string } | null {
 	try {
-		// Supabase stores: [access_token, refresh_token, null, null]
-		const decoded = decodeURIComponent(value);
+		const decoded = decodeValue(value);
 		const parsed: unknown = JSON.parse(decoded);
 
-		if (Array.isArray(parsed) && typeof parsed[0] === "string") {
-			const refreshToken = typeof parsed[1] === "string" ? parsed[1] : "";
-			return {
-				accessToken: parsed[0],
-				refreshToken,
-			};
-		}
-		return null;
+		return extractFromObject(parsed) ?? extractFromArray(parsed);
 	} catch {
 		return null;
 	}

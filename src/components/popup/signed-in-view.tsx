@@ -7,12 +7,14 @@ export function SignedInView() {
 	return (
 		<div className="w-72 space-y-4 p-4">
 			<PopupHeader />
-			<Button disabled size="lg" className="w-full">
-				Sync Instagram
-				<Badge variant="secondary" className="ml-2">
+			<div className="relative">
+				<Button disabled size="lg" className="w-full">
+					Sync Instagram
+				</Button>
+				<Badge className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs">
 					Coming soon
 				</Badge>
-			</Button>
+			</div>
 		</div>
 	);
 }
