@@ -5,6 +5,10 @@ import { defineConfig } from "wxt";
 export default defineConfig({
 	modules: ["@wxt-dev/module-react"],
 	srcDir: "src",
+	manifest: {
+		permissions: ["cookies"],
+		host_permissions: ["http://localhost/*", "https://app.recollect.so/*"],
+	},
 	vite: () => ({
 		plugins: [tailwindcss()],
 	}),
