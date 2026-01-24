@@ -49,7 +49,7 @@ This example demonstrates how to integrate React 19+, Tailwind CSS v4+, and shad
 
 4. **Configure Tailwind CSS in `wxt.config.ts`:**
 
-    To configure Tailwind CSS, modify `wxt.config.ts`. While official documentation says to change `vite.config.ts`, WXT configures Vite internally, so you need to update `wxt.config.ts` instead. This file manages the build process. To integrate Tailwind, add it as a Vite plugin within the wxt.config.ts file, as shown here:
+   To configure Tailwind CSS, modify `wxt.config.ts`. While official documentation says to change `vite.config.ts`, WXT configures Vite internally, so you need to update `wxt.config.ts` instead. This file manages the build process. To integrate Tailwind, add it as a Vite plugin within the wxt.config.ts file, as shown here:
 
    ```ts
    import { defineConfig } from "wxt";
