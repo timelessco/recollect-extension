@@ -1,16 +1,16 @@
+import "@/assets/tailwind.css";
+
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-import App from "./app.tsx";
-
-import "@/assets/tailwind.css";
+import { Client } from "./client.tsx";
 
 const rootElement = document.querySelector("#root");
 
 if (rootElement) {
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
-      <App />
+      <Client />
     </React.StrictMode>
   );
 }

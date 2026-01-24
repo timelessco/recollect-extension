@@ -4,7 +4,7 @@ import reactLogo from "@/assets/react.svg";
 import wxtLogo from "@/assets/wxt.svg";
 import { Button } from "@/components/ui/button";
 
-function App() {
+export function Client() {
   const [count, setCount] = useState(0);
 
   const handleClick = useCallback(() => {
@@ -39,5 +39,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
