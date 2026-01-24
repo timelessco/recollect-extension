@@ -5,14 +5,21 @@
   "description": "manifest.json description",
   "type": "module",
   "scripts": {
-    "dev": "wxt",
-    "dev:firefox": "wxt -b firefox",
     "build": "wxt build",
     "build:firefox": "wxt build -b firefox",
-    "zip": "wxt zip",
-    "zip:firefox": "wxt zip -b firefox",
+    "bump-deps": "bunx npm-check-updates --deep -u -x \"recharts,react-resizable-panels\" && bun install",
+    "check": "bunx ultracite check --type-aware --type-check",
     "compile": "tsc --noEmit",
-    "postinstall": "wxt prepare"
+    "dev": "wxt",
+    "dev:firefox": "wxt -b firefox",
+    "fix": "bunx ultracite fix --type-aware --type-check",
+    "knip": "bunx knip",
+    "postinstall": "wxt prepare",
+    "prepare": "husky",
+    "release": "release-it",
+    "release:dry": "release-it --dry-run",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip -b firefox"
   },
   "dependencies": {
     "@base-ui/react": "1.1.0",
@@ -29,13 +36,27 @@
     "tw-animate-css": "1.4.0"
   },
   "devDependencies": {
-    "@types/node": "25.0.10",
+    "@release-it/conventional-changelog": "^10.0.4",
+    "@total-typescript/ts-reset": "^0.6.1",
+    "@types/node": "^25.0.10",
     "@types/react": "19.2.9",
     "@types/react-dom": "19.2.3",
     "@wxt-dev/module-react": "1.1.5",
-    "shadcn": "3.7.0",
-    "tw-animate-css": "1.4.0",
-    "typescript": "5.9.3",
+    "husky": "9.1.7",
+    "knip": "^5.82.1",
+    "lint-staged": "16.2.7",
+    "oxfmt": "0.26.0",
+    "oxlint": "1.41.0",
+    "oxlint-tsgolint": "0.11.1",
+    "release-it": "^19.2.4",
+    "typescript": "^5.9.3",
+    "ultracite": "7.0.12",
     "wxt": "0.20.13"
-  }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}": [
+      "bunx ultracite fix --type-aware --type-check"
+    ]
+  },
+  "packageManager": "bun@1.3.5"
 }
