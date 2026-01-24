@@ -15,10 +15,22 @@
   "bracketSameLine": false,
   "arrowParens": "always",
   "endOfLine": "lf",
-  "experimentalSortPackageJson": true,
+  "experimentalSortPackageJson": {
+    "sortScripts": true,
+  },
   "experimentalSortImports": {
     "ignoreCase": true,
     "newlinesBetween": true,
     "order": "asc",
+    "groups": [
+      ["side-effect"],
+      ["builtin"],
+      ["^react$", "^react-dom$"],
+      ["external", "external-type"],
+      ["internal", "internal-type"],
+      ["parent", "parent-type"],
+      ["sibling", "sibling-type"],
+      ["index", "index-type"],
+    ],
   },
 }
