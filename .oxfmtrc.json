@@ -1,8 +1,6 @@
-// Ultracite oxfmt Configuration
-// https://oxc.rs/docs/guide/usage/formatter/config-file-reference.html
 {
 	"$schema": "./node_modules/oxfmt/configuration_schema.json",
-	"ignore": ["src/components/ui/**", "CHANGELOG.md"],
+	"ignorePatterns": ["src/components/ui/**", "CHANGELOG.md"],
 	"printWidth": 80,
 	"tabWidth": 2,
 	"useTabs": true,
@@ -16,7 +14,7 @@
 	"arrowParens": "always",
 	"endOfLine": "lf",
 	"experimentalSortPackageJson": {
-		"sortScripts": true,
+		"sortScripts": true
 	},
 	"experimentalSortImports": {
 		"ignoreCase": true,
@@ -30,7 +28,7 @@
 			["internal", "internal-type"],
 			["parent", "parent-type"],
 			["sibling", "sibling-type"],
-			["index", "index-type"],
-		],
-	},
+			["index", "index-type"]
+		]
+	}
 }
