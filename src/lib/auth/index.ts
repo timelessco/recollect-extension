@@ -79,6 +79,21 @@ function determineAuthState(authCookies: AuthCookie[]): AuthState {
 	return { isAuthenticated: true, ...parsed };
 }
 
+function buildTokenPreview(authCookies: AuthCookie[]): string | null {
+	if (authCookies.length === 0) {
+		return null;
+	}
+
+	const baseName = extractBaseName(authCookies);
+	const value = combineChunks(baseName, authCookies);
+
+	if (value === null || value === "") {
+		return null;
+	}
+
+	return `${value.slice(0, 50)}...`;
+}
+
 async function saveDebugLog(
 	durationMs: number,
 	authCookies: AuthCookie[],
@@ -90,11 +105,12 @@ async function saveDebugLog(
 
 	await browser.storage.local.set({
 		auth_debug: {
-			cookieCount: authCookies.length,
 			cookieNames: authCookies.map((c) => c.name),
 			durationMs: Math.round(durationMs),
+			hasChunkedCookies: authCookies.some((c) => c.name.includes(".")),
 			result,
 			timestamp: new Date().toISOString(),
+			tokenPreview: buildTokenPreview(authCookies),
 		},
 	});
 }
@@ -113,56 +129,6 @@ export async function checkAuthState(): Promise<AuthState> {
 		await saveDebugLog(performance.now() - startTime, authCookies, errorResult);
 		return errorResult;
 	}
-}
-
-export interface AuthDebugInfo {
-	cookieCount: number;
-	authCookieNames: string[];
-	hasChunkedCookies: boolean;
-	tokenPreview: string | null;
-	checkDurationMs: number;
-}
-
-function buildTokenPreview(authCookies: AuthCookie[]): string | null {
-	if (authCookies.length === 0) {
-		return null;
-	}
-
-	if (!config.isDev) {
-		return "[MASKED]";
-	}
-
-	const baseName = extractBaseName(authCookies);
-	const value = combineChunks(baseName, authCookies);
-
-	if (value === null || value === "") {
-		return null;
-	}
-
-	return `${value.slice(0, 50)}...`;
-}
-
-export async function getAuthDebugInfo(): Promise<AuthDebugInfo> {
-	const startTime = performance.now();
-
-	const cookies = await browser.cookies.getAll({
-		domain: config.recollectDomain,
-	});
-
-	const authCookies: AuthCookie[] = cookies
-		.filter((c) => AUTH_COOKIE_PATTERN.test(c.name))
-		.map((c) => ({ name: c.name, value: c.value }));
-
-	const authCookieNames = authCookies.map((c) => c.name);
-	const hasChunkedCookies = authCookies.some((c) => c.name.includes("."));
-
-	return {
-		authCookieNames,
-		checkDurationMs: performance.now() - startTime,
-		cookieCount: cookies.length,
-		hasChunkedCookies,
-		tokenPreview: buildTokenPreview(authCookies),
-	};
 }
 
 export type {
