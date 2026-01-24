@@ -23,5 +23,9 @@ web-ext.config.ts
 *.sln
 *.sw?
 
+# Environment files
+.env*
+!.env.example
+
 _plans
 .planning
