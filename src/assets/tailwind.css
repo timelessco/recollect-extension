@@ -122,10 +122,10 @@
   }
 
   body {
-    @apply font-sans ! bg-background text-foreground overflow-hidden;
+    @apply font-sans! bg-background text-foreground overflow-hidden;
   }
 
   html {
-    @apply font-sans ! antialiased optimize-legibility;
+    @apply font-sans! antialiased optimize-legibility;
   }
 }
