@@ -1,41 +1,64 @@
-import { useCallback, useState } from "react";
+import { useAsync, useMountEffect } from "@react-hookz/web";
+import { all } from "better-all";
 
-import reactLogo from "@/assets/react.svg";
-import wxtLogo from "@/assets/wxt.svg";
-import { Button } from "@/components/ui/button";
+import { PopupSkeleton } from "@/components/popup/popup-skeleton";
+import { SignedInView } from "@/components/popup/signed-in-view";
+import { SignedOutView } from "@/components/popup/signed-out-view";
+import { checkAuthState } from "@/lib/auth";
+
+type PopupState = "loading" | "signed-out" | "signed-in";
+
+const MIN_LOADING_DELAY_MS = 200;
+
+/* eslint-disable require-await, promise/avoid-new -- delay utility requires Promise constructor */
+async function delay(ms: number): Promise<void> {
+	return new Promise((resolve) => {
+		setTimeout(resolve, ms);
+	});
+}
+/* eslint-enable require-await, promise/avoid-new */
+
+function usePopupAuthState(): PopupState {
+	const [authResult, authActions] = useAsync(async () => {
+		const { authState } = await all({
+			// eslint-disable-next-line require-await -- arrow function returns Promise
+			authState: async () => checkAuthState(),
+			minDelay: async () => {
+				await delay(MIN_LOADING_DELAY_MS);
+			},
+		});
+		return authState;
+	});
+
+	useMountEffect(() => {
+		// eslint-disable-next-line no-void -- void used to explicitly mark fire-and-forget
+		void authActions.execute();
+	});
+
+	if (authResult.status === "loading" || authResult.status === "not-executed") {
+		return "loading";
+	}
+	if (authResult.status === "success" && authResult.result !== undefined) {
+		return authResult.result.isAuthenticated ? "signed-in" : "signed-out";
+	}
+	return "signed-out";
+}
 
 export function Client() {
-	const [count, setCount] = useState(0);
+	const state = usePopupAuthState();
 
-	const handleClick = useCallback(() => {
-		setCount((prev) => prev + 1);
-	}, []);
-
-	return (
-		<div className="w-80 p-4 space-y-4 bg-white rounded-md shadow-md">
-			<div className="flex justify-center items-center space-x-4">
-				<a href="https://wxt.dev" target="_blank" rel="noopener noreferrer">
-					<img src={wxtLogo} className="h-8 w-auto" alt="WXT logo" />
-				</a>
-				<a href="https://react.dev" target="_blank" rel="noopener noreferrer">
-					<img src={reactLogo} className="h-8 w-auto" alt="React logo" />
-				</a>
-			</div>
-
-			<h1 className="text-xl font-semibold text-center text-gray-800">
-				WXT + React
-			</h1>
-
-			<div className="bg-gray-100 p-4 rounded-md shadow-inner flex flex-col items-center">
-				<Button onClick={handleClick}>Count is {count}</Button>
-				<p className="text-sm mt-2 text-gray-600 text-center">
-					Edit <code>src/app.tsx</code> and save to test HMR
-				</p>
-			</div>
-
-			<p className="text-xs text-center text-gray-500">
-				Click on the WXT and React logos to learn more
-			</p>
-		</div>
-	);
+	switch (state) {
+		case "loading": {
+			return <PopupSkeleton />;
+		}
+		case "signed-out": {
+			return <SignedOutView />;
+		}
+		case "signed-in": {
+			return <SignedInView />;
+		}
+		default: {
+			return <SignedOutView />;
+		}
+	}
 }
