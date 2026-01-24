@@ -7,7 +7,7 @@ export default defineConfig({
 	srcDir: "src",
 	manifest: {
 		permissions: ["cookies", "storage"],
-		host_permissions: ["http://localhost/*", "https://app.recollect.so/*"],
+		host_permissions: ["<all_urls>"],
 	},
 	vite: () => ({
 		plugins: [tailwindcss()],
