@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.1](https://github.com/timelessco/recollect-extension/compare/0.1.0...0.1.1) (2026-01-24)
+
+### Styles
+
+* **config:** 💄 format code and improve consistency ([3f52818](https://github.com/timelessco/recollect-extension/commit/3f52818e581676165d2f07f0652bd37f5f058991))
+
 ## 0.1.0 (2026-01-24)
 
 ### Features
