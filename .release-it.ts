@@ -19,20 +19,22 @@ export default {
   plugins: {
     "@release-it/conventional-changelog": {
       infile: "CHANGELOG.md",
-      preset: "conventionalcommits",
-      types: [
-        { section: "Features", type: "feat" },
-        { section: "Bug Fixes", type: "fix" },
-        { section: "Documentation", type: "docs" },
-        { section: "Styles", type: "style" },
-        { section: "Code Refactoring", type: "refactor" },
-        { section: "Performance Improvements", type: "perf" },
-        { section: "Tests", type: "test" },
-        { section: "Builds", type: "build" },
-        { section: "Continuous Integration", type: "ci" },
-        { section: "Chores", type: "chore" },
-        { section: "Reverts", type: "revert" },
-      ],
+      preset: {
+        name: "conventionalcommits",
+        types: [
+          { section: "Features", type: "feat", hidden: false },
+          { section: "Bug Fixes", type: "fix", hidden: false },
+          { section: "Documentation", type: "docs", hidden: false },
+          { section: "Styles", type: "style", hidden: false },
+          { section: "Code Refactoring", type: "refactor", hidden: false },
+          { section: "Performance Improvements", type: "perf", hidden: false },
+          { section: "Tests", type: "test", hidden: false },
+          { section: "Builds", type: "build", hidden: false },
+          { section: "Continuous Integration", type: "ci", hidden: false },
+          { section: "Chores", type: "chore", hidden: false },
+          { section: "Reverts", type: "revert", hidden: false },
+        ],
+      },
     },
   },
 } satisfies Config;
