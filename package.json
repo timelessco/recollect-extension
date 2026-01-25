@@ -7,13 +7,13 @@
 	"scripts": {
 		"build": "wxt build",
 		"build:firefox": "wxt build -b firefox",
-		"bump-deps": "bunx npm-check-updates --deep -u -x \"recharts,react-resizable-panels\" && bun install",
-		"check": "bunx ultracite check --type-aware --type-check",
+		"bump-deps": "bun x npm-check-updates --deep -u -x \"recharts,react-resizable-panels\" && bun install",
+		"check": "bun x ultracite check --type-aware --type-check",
 		"compile": "tsc --noEmit",
 		"dev": "wxt",
 		"dev:firefox": "wxt -b firefox",
-		"fix": "bunx ultracite fix --type-aware --type-check",
-		"knip": "bunx knip",
+		"fix": "bun x ultracite fix --type-aware --type-check",
+		"knip": "bun x knip",
 		"postinstall": "wxt prepare",
 		"prepare": "husky",
 		"release": "release-it",
@@ -56,7 +56,7 @@
 	},
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}": [
-			"bunx ultracite fix --type-aware --type-check"
+			"bun x ultracite fix --type-aware --type-check"
 		]
 	},
 	"packageManager": "bun@1.3.5"

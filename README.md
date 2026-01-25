@@ -14,7 +14,7 @@ This example demonstrates how to integrate React 19+, Tailwind CSS v4+, and shad
    Open your terminal and run the following command to create a new WXT project with the React template:
 
    ```sh
-   bunx wxt@latest init
+   bun x wxt@latest init
    ```
 
    The CLI will guide you through the project setup. Choose the `react` template and your preferred package manager. For this example, I use bun.
@@ -163,7 +163,7 @@ This example demonstrates how to integrate React 19+, Tailwind CSS v4+, and shad
     Run the Shadcn UI initialization command:
 
     ```sh
-    bunx shadcn-ui@latest init
+    bun x shadcn-ui@latest init
     ```
 
     Answer the prompts in the CLI to configure Shadcn UI according to your preferences (color scheme, etc.).
@@ -177,7 +177,7 @@ This example demonstrates how to integrate React 19+, Tailwind CSS v4+, and shad
     You can now add Shadcn UI components using the CLI:
 
     ```sh
-    bunx shadcn-ui@latest add button
+    bun x shadcn-ui@latest add button
     ```
 
     This will install the button component and its dependencies. Repeat this command for any other components you wish to use.

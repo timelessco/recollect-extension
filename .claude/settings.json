@@ -6,7 +6,7 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "bunx ultracite fix --type-aware --type-check"
+						"command": "bun x ultracite fix --type-aware --type-check"
 					}
 				]
 			}
