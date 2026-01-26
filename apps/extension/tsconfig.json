@@ -8,6 +8,8 @@
 			"@/components/ui/*": ["../../packages/shadcn-ui/components/ui/*"],
 			"@/lib/utils": ["../../packages/shadcn-ui/lib/utils"]
 		},
-		"strictNullChecks": true
-	}
+		"strictNullChecks": true,
+		"types": ["node", "react", "react-dom"]
+	},
+	"exclude": ["knip.ts"]
 }
