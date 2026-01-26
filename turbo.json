@@ -1,0 +1,20 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "ui": "tui",
+  "globalPassThroughEnv": ["DEV", "PROD"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".output/**", ".wxt/**"],
+      "env": ["VITE_RECOLLECT_DOMAIN", "VITE_RECOLLECT_URL"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "//#check": {},
+    "//#fix": {
+      "cache": false
+    }
+  }
+}

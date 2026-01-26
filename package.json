@@ -1,25 +1,28 @@
 {
-	"name": "recollect-monorepo",
-	"version": "0.2.0",
-	"private": true,
-	"description": "Recollect monorepo",
-	"type": "module",
-	"scripts": {
-		"build": "pnpm --filter recollect-extension build",
-		"bump-deps": "npx npm-check-updates --deep -u",
-		"check": "pnpm -r run check",
-		"dev": "pnpm --filter recollect-extension dev",
-		"fix": "pnpm -r run fix",
-		"prepare": "husky"
-	},
-	"devDependencies": {
-		"husky": "9.1.7",
-		"lint-staged": "16.2.7"
-	},
-	"lint-staged": {
-		"*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}": [
-			"pnpm run fix"
-		]
-	},
-	"packageManager": "pnpm@10.28.0"
+  "name": "recollect-monorepo",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Recollect monorepo",
+  "type": "module",
+  "scripts": {
+    "build": "turbo run build",
+    "bump-deps": "npx npm-check-updates --deep -u",
+    "check": "npx ultracite@latest check",
+    "dev": "turbo run dev",
+    "fix": "npx ultracite@latest fix",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.3.11",
+    "husky": "9.1.7",
+    "lint-staged": "16.2.7",
+    "turbo": "^2.7.6",
+    "ultracite": "7.0.12"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}": [
+      "pnpm run fix"
+    ]
+  },
+  "packageManager": "pnpm@10.28.0"
 }

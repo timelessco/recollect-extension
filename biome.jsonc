@@ -1,0 +1,26 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "extends": ["ultracite/biome/core", "ultracite/biome/react"],
+  "files": {
+    "includes": ["!!packages/shadcn-ui"]
+  },
+  "linter": {
+    "rules": {
+      "nursery": {
+        "noUndeclaredEnvVars": "error"
+      }
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["**/.release-it.ts"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noTemplateCurlyInString": "off"
+          }
+        }
+      }
+    }
+  ]
+}
