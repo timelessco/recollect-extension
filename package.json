@@ -1,63 +1,25 @@
 {
-	"name": "react-shadcn",
+	"name": "recollect-monorepo",
 	"version": "0.2.0",
 	"private": true,
-	"description": "manifest.json description",
+	"description": "Recollect monorepo",
 	"type": "module",
 	"scripts": {
-		"build": "wxt build",
-		"build:firefox": "wxt build -b firefox",
-		"bump-deps": "bun x npm-check-updates --deep -u -x \"recharts,react-resizable-panels\" && bun install",
-		"check": "bun x ultracite check --type-aware --type-check",
-		"compile": "tsc --noEmit",
-		"dev": "wxt",
-		"dev:firefox": "wxt -b firefox",
-		"fix": "bun x ultracite fix --type-aware --type-check",
-		"knip": "bun x knip",
-		"postinstall": "wxt prepare",
-		"prepare": "husky",
-		"release": "release-it",
-		"release:dry": "release-it --dry-run",
-		"zip": "wxt zip",
-		"zip:firefox": "wxt zip -b firefox"
-	},
-	"dependencies": {
-		"@base-ui/react": "1.1.0",
-		"@fontsource-variable/inter": "5.2.8",
-		"@react-hookz/web": "^25.2.0",
-		"@tailwindcss/vite": "4.1.18",
-		"class-variance-authority": "0.7.1",
-		"clsx": "2.1.1",
-		"lucide-react": "0.563.0",
-		"react": "19.2.3",
-		"react-dom": "19.2.3",
-		"shadcn": "3.7.0",
-		"tailwind-merge": "3.4.0",
-		"tailwindcss": "4.1.18",
-		"tw-animate-css": "1.4.0"
+		"build": "pnpm --filter recollect-extension build",
+		"bump-deps": "npx npm-check-updates --deep -u",
+		"check": "pnpm -r run check",
+		"dev": "pnpm --filter recollect-extension dev",
+		"fix": "pnpm -r run fix",
+		"prepare": "husky"
 	},
 	"devDependencies": {
-		"@release-it/conventional-changelog": "^10.0.4",
-		"@total-typescript/ts-reset": "^0.6.1",
-		"@types/node": "^25.0.10",
-		"@types/react": "19.2.9",
-		"@types/react-dom": "19.2.3",
-		"@wxt-dev/module-react": "1.1.5",
 		"husky": "9.1.7",
-		"knip": "^5.82.1",
-		"lint-staged": "16.2.7",
-		"oxfmt": "0.26.0",
-		"oxlint": "1.41.0",
-		"oxlint-tsgolint": "0.11.1",
-		"release-it": "^19.2.4",
-		"typescript": "^5.9.3",
-		"ultracite": "7.0.12",
-		"wxt": "0.20.13"
+		"lint-staged": "16.2.7"
 	},
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}": [
-			"bun x ultracite fix --type-aware --type-check"
+			"pnpm run fix"
 		]
 	},
-	"packageManager": "bun@1.3.5"
+	"packageManager": "pnpm@10.28.0"
 }
