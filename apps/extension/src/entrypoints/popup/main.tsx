@@ -3,7 +3,7 @@ import "@/assets/tailwind.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-import { Client } from "./client.tsx";
+import { Client } from "./client";
 
 const rootElement = document.querySelector("#root");
 
