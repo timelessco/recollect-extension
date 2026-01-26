@@ -1,14 +1,14 @@
 {
-	"extends": "./.wxt/tsconfig.json",
-	"compilerOptions": {
-		"allowImportingTsExtensions": true,
-		"jsx": "react-jsx",
-		"paths": {
-			"@/*": ["./src/*"],
-			"@repo/shadcn-ui/*": ["../../packages/shadcn-ui/*"]
-		},
-		"strictNullChecks": true,
-		"types": ["node", "react", "react-dom"]
-	},
-	"exclude": ["knip.ts"]
+  "extends": "./.wxt/tsconfig.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "jsx": "react-jsx",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@repo/shadcn-ui/*": ["../../packages/shadcn-ui/*"]
+    },
+    "strictNullChecks": true,
+    "types": ["node", "react", "react-dom"]
+  },
+  "exclude": ["knip.ts"]
 }

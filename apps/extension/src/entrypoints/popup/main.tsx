@@ -8,9 +8,9 @@ import { Client } from "./client";
 const rootElement = document.querySelector("#root");
 
 if (rootElement) {
-	ReactDOM.createRoot(rootElement).render(
-		<React.StrictMode>
-			<Client />
-		</React.StrictMode>
-	);
+  ReactDOM.createRoot(rootElement).render(
+    <React.StrictMode>
+      <Client />
+    </React.StrictMode>
+  );
 }
