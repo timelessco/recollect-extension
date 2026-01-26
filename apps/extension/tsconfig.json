@@ -5,8 +5,7 @@
 		"jsx": "react-jsx",
 		"paths": {
 			"@/*": ["./src/*"],
-			"@/components/ui/*": ["../../packages/shadcn-ui/components/ui/*"],
-			"@/lib/utils": ["../../packages/shadcn-ui/lib/utils"]
+			"@repo/shadcn-ui/*": ["../../packages/shadcn-ui/*"]
 		},
 		"strictNullChecks": true,
 		"types": ["node", "react", "react-dom"]
