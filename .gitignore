@@ -30,3 +30,4 @@ web-ext.config.ts
 _plans
 .planning
 .worker-tracking
+.turbo
