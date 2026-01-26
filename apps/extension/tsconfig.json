@@ -4,7 +4,9 @@
 		"allowImportingTsExtensions": true,
 		"jsx": "react-jsx",
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*"],
+			"@/components/ui/*": ["../../packages/shadcn-ui/components/ui/*"],
+			"@/lib/utils": ["../../packages/shadcn-ui/lib/utils"]
 		},
 		"strictNullChecks": true
 	}
