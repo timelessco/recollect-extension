@@ -1,5 +1,5 @@
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@repo/shadcn-ui/components/ui/badge";
+import { Button } from "@repo/shadcn-ui/components/ui/button";
 
 import { PopupHeader } from "./popup-header";
 

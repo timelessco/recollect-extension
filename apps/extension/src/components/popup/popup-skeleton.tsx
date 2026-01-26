@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@repo/shadcn-ui/components/ui/skeleton";
 
 export function PopupSkeleton() {
 	return (

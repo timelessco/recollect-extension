@@ -1,6 +1,6 @@
+import { Button } from "@repo/shadcn-ui/components/ui/button";
 import { browser } from "wxt/browser";
 
-import { Button } from "@/components/ui/button";
 import { config } from "@/lib/config";
 
 import { PopupHeader } from "./popup-header";
