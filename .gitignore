@@ -1,22 +1,9 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Dependencies
 node_modules
-.output
-stats.html
-stats-*.json
-.wxt
-web-ext.config.ts
-
-# Editor directories and files
-.idea
-.DS_Store
+.pnp
+.pnp.js
 *.suo
 *.ntvs*
 *.njsproj
@@ -27,7 +14,42 @@ web-ext.config.ts
 .env*
 !.env.example
 
+# Testing
+coverage
+**/__screenshots__
+
+# Turbo
+.turbo
+
+# Vercel
+.vercel
+
+# Build Outputs
+.next/
+out/
+build
+dist
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Misc
+.DS_Store
+*.pem
+
+# Project specific
 _plans
 .planning
 .worker-tracking
-.turbo
+
+# Next.js
+next-env.d.ts
+
+# extension
+.output
+.wxt
+
