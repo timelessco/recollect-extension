@@ -33,7 +33,7 @@ importers:
         specifier: 16.2.7
         version: 16.2.7
       turbo:
-        specifier: ^2.7.6
+        specifier: 2.7.6
         version: 2.7.6
       ultracite:
         specifier: 7.0.12
@@ -45,7 +45,7 @@ importers:
         specifier: 5.2.8
         version: 5.2.8
       '@react-hookz/web':
-        specifier: ^25.2.0
+        specifier: 25.2.0
         version: 25.2.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@repo/shadcn-ui':
         specifier: workspace:*
@@ -70,13 +70,13 @@ importers:
         version: 1.4.0
     devDependencies:
       '@release-it/conventional-changelog':
-        specifier: ^10.0.4
+        specifier: 10.0.4
         version: 10.0.4(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.2.1)(release-it@19.2.4(@types/node@25.0.10)(magicast@0.3.5))
       '@total-typescript/ts-reset':
-        specifier: ^0.6.1
+        specifier: 0.6.1
         version: 0.6.1
       '@types/node':
-        specifier: ^25.0.10
+        specifier: 25.0.10
         version: 25.0.10
       '@types/react':
         specifier: 'catalog:'
@@ -88,13 +88,13 @@ importers:
         specifier: 1.1.5
         version: 1.1.5(vite@7.3.1(@types/node@25.0.10)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))(wxt@0.20.13(@types/node@25.0.10)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.56.0)(yaml@2.8.2))
       release-it:
-        specifier: ^19.2.4
+        specifier: 19.2.4
         version: 19.2.4(@types/node@25.0.10)(magicast@0.3.5)
       shadcn:
-        specifier: ^3.7.0
+        specifier: 3.7.0
         version: 3.7.0(@types/node@25.0.10)(hono@4.11.6)(typescript@5.9.3)
       typescript:
-        specifier: ^5.9.3
+        specifier: 5.9.3
         version: 5.9.3
       wxt:
         specifier: 0.20.13
