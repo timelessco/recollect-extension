@@ -26,8 +26,7 @@
       "comments": "on",
       "strings": "on",
       "other": "on"
-    },
-    "editor.defaultFormatter": "biomejs.biome"
+    }
   },
   "tailwindCSS.experimental.classRegex": [
     "(?:const|let|var)\\s+\\w+\\s*=\\s*[\"'`]([^\"'`]*)[\"'`]"
@@ -38,44 +37,5 @@
     "typescriptreact": "javascript",
     "javascriptreact": "javascript"
   },
-  "tailwindCSS.classFunctions": ["cn"],
-  "[javascript]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[javascriptreact]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[json]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[jsonc]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[html]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[vue]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[svelte]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[css]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[yaml]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[graphql]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[mdx]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  }
+  "tailwindCSS.classFunctions": ["cn"]
 }

@@ -6,11 +6,12 @@
   "type": "module",
   "scripts": {
     "build": "turbo run build",
-    "bump-deps": "npx npm-check-updates --deep -u",
-    "check": "npx ultracite@latest check",
+    "bump-deps": "pnpm npm-check-updates --deep -u",
+    "check": "pnpm dlx ultracite check",
     "dev": "turbo run dev",
-    "fix": "npx ultracite@latest fix",
-    "prepare": "husky"
+    "fix": "pnpm dlx ultracite fix",
+    "prepare": "husky",
+    "test": "true"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.11",
@@ -21,7 +22,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}": [
-      "pnpm run fix"
+      "pnpm dlx ultracite fix"
     ]
   },
   "packageManager": "pnpm@10.28.0"
