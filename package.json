@@ -7,11 +7,14 @@
   "scripts": {
     "build": "turbo run build",
     "bump-deps": "pnpm npm-check-updates --deep -u",
+    "changeset": "changeset",
     "check": "pnpm dlx ultracite check",
     "dev": "turbo run dev",
     "fix": "pnpm dlx ultracite fix",
     "prepare": "husky",
-    "test": "true"
+    "release": "pnpm build && pnpm --filter recollect-extension zip",
+    "test": "true",
+    "version": "changeset version"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.11",
