@@ -1,7 +1,7 @@
 {
   "recommendations": [
-    // Oxc is an opinionated code formatter.
-    "oxc.oxc-vscode",
+    // Biome is an opinionated code linter & formatter.
+    "biomejs.biome",
 
     // Frontend
     "bradlc.vscode-tailwindcss",
@@ -11,6 +11,7 @@
     "humao.rest-client",
 
     // Quality of life extensions
+    "folke.vscode-monorepo-workspace",
     "yoavbls.pretty-ts-errors",
     "aaron-bond.better-comments",
     "formulahendry.auto-close-tag",
