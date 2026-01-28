@@ -10,6 +10,6 @@
   "access": "restricted",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@repo/shadcn-ui", "recollect-monorepo"],
+  "ignore": [],
   "privatePackages": { "version": true, "tag": true }
 }
