@@ -1,0 +1,57 @@
+{
+  "folders": [
+    {
+      "name": "✨ recollect-monorepo",
+      "path": "."
+    },
+    {
+      "name": "🚀 recollect-extension",
+      "path": "apps/extension"
+    },
+    {
+      "name": "📦 @repo/shadcn-ui",
+      "path": "packages/shadcn-ui"
+    }
+  ],
+  "settings": {
+    "git.branchProtection": ["main"],
+    "githubPullRequests.ignoredPullRequestBranches": ["main"],
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "files.associations": {
+      "*.svg": "html",
+      ".env.*": "dotenv",
+      "*.json": "jsonc",
+      "package.json": "json",
+      ".all-contributorsrc": "json",
+      "*.tsx": "typescriptreact",
+      "*.jsx": "javascriptreact"
+    },
+    "editor.defaultFormatter": "biomejs.biome",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "emmet.showExpandedAbbreviation": "never",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.biome": "explicit",
+      "source.organizeImports.biome": "explicit"
+    },
+    "css.validate": false,
+    "css.lint.unknownAtRules": "ignore",
+    "[markdown]": {
+      "editor.quickSuggestions": {
+        "comments": "on",
+        "strings": "on",
+        "other": "on"
+      }
+    },
+    "tailwindCSS.experimental.classRegex": [
+      "(?:const|let|var)\\s+\\w+\\s*=\\s*[\"'`]([^\"'`]*)[\"'`]"
+    ],
+    "tailwindCSS.includeLanguages": {
+      "plaintext": "html",
+      "typescript": "javascript",
+      "typescriptreact": "javascript",
+      "javascriptreact": "javascript"
+    },
+    "tailwindCSS.classFunctions": ["cn"]
+  }
+}

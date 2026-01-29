@@ -44,12 +44,3 @@ lerna-debug.log*
 # Project specific
 _plans
 .planning
-.worker-tracking
-
-# Next.js
-next-env.d.ts
-
-# extension
-.output
-.wxt
-
