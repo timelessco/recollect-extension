@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.3
+
+### Patch Changes
+
+- Updated dependencies [[`ead60ee`](https://github.com/timelessco/recollect-extension/commit/ead60ee9913931dfe6e90a09d4ea191c7490e863)]:
+  - @repo/shadcn-ui@0.0.3
+
 ## 0.2.2
 
 ### Patch Changes
