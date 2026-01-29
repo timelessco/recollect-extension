@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.4
+
+### Patch Changes
+
+- [`bce1651`](https://github.com/timelessco/recollect-extension/commit/bce1651303aefcbb275f8fa15a23e4425f7ae251) Thanks [@navin-moorthy](https://github.com/navin-moorthy)! - ci: merge artifact upload into release workflow
+
 ## 0.2.3
 
 ### Patch Changes
