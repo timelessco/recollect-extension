@@ -3,68 +3,50 @@
 ## Prerequisites
 
 - **[Git](https://git-scm.com/)**
-- **[Bun](https://bun.sh/)** (see `packageManager` in package.json for version)
+- **[pnpm](https://pnpm.io/)** (see `packageManager` in package.json for version)
 
 ## Getting Started
 
 ```shell
 git clone https://github.com/timelessco/recollect-extension
 cd recollect-extension
-bun install
+pnpm install
 ```
 
 ## Development
 
 ```bash
-bun dev
+pnpm dev
 ```
 
-This starts the WXT development server with hot reload.
+Starts the WXT development server with hot reload via Turborepo.
 
 ## Building
 
 ```bash
-bun run build
+pnpm build
 ```
 
-Builds the extension for Chrome. Output is in `.output/chrome-mv3/`.
-
-For Firefox:
-
-```bash
-bun run build:firefox
-```
+Builds all packages. Extension output is in `apps/extension/.output/chrome-mv3/`.
 
 ## Linting & Formatting
 
 Check for issues:
 
 ```bash
-bun run check
+pnpm check
 ```
 
 Auto-fix issues:
 
 ```bash
-bun run fix
+pnpm fix
 ```
 
-## Unused Dependencies & Exports
+## Release
 
-Check for unused dependencies, exports, and types:
-
-```bash
-bun run knip
-```
-
-## Creating Extension ZIP
+Build and create extension ZIP:
 
 ```bash
-bun run zip
-```
-
-For Firefox:
-
-```bash
-bun run zip:firefox
+pnpm release
 ```

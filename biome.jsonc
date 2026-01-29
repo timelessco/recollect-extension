@@ -10,17 +10,5 @@
         "noUndeclaredEnvVars": "error"
       }
     }
-  },
-  "overrides": [
-    {
-      "includes": ["**/.release-it.ts"],
-      "linter": {
-        "rules": {
-          "suspicious": {
-            "noTemplateCurlyInString": "off"
-          }
-        }
-      }
-    }
-  ]
+  }
 }

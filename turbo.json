@@ -1,9 +1,10 @@
 {
-  "$schema": "https://turborepo.com/schema.json",
+  "$schema": "https://turborepo.dev/schema.v2.json",
   "globalPassThroughEnv": ["DEV", "PROD"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".output/**", ".wxt/**"],
       "env": ["VITE_RECOLLECT_DOMAIN", "VITE_RECOLLECT_URL"]
     },

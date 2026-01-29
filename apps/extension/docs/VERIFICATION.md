@@ -8,8 +8,8 @@ Reusable checklist for verifying extension builds before release. Use this for b
 
 | Command         | Output Directory          | Purpose                    |
 | --------------- | ------------------------- | -------------------------- |
-| `pnpm run dev`   | `.output/chrome-mv3-dev/` | Development build with HMR |
-| `pnpm run build` | `.output/chrome-mv3/`     | Production build           |
+| `pnpm dev`   | `.output/chrome-mv3-dev/` | Development build with HMR |
+| `pnpm build` | `.output/chrome-mv3/`     | Production build           |
 
 ### Expected Manifest Permissions
 
@@ -37,7 +37,7 @@ Both builds should include:
 ### Prerequisites
 
 - [ ] Local Recollect app running at `http://localhost:3000`
-- [ ] Dev server running (`pnpm run dev`)
+- [ ] Dev server running (`pnpm dev`)
 
 ### Load Extension
 
@@ -80,7 +80,7 @@ Both builds should include:
 
 ### Prerequisites
 
-- [ ] Production build exists (`pnpm run build`)
+- [ ] Production build exists (`pnpm build`)
 - [ ] Dev extension removed from Chrome
 
 ### Load Extension
@@ -211,7 +211,7 @@ Occurs if popup is open during extension reload. Close and reopen popup.
 
 Before publishing a new version:
 
-- [ ] `pnpm run build` completes without errors
+- [ ] `pnpm build` completes without errors
 - [ ] Production manifest has correct version number
 - [ ] All production verification checks pass
 - [ ] No console errors on load

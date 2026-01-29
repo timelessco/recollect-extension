@@ -7,11 +7,9 @@
   "scripts": {
     "build": "wxt build",
     "build:firefox": "wxt build -b firefox",
-    "check": "pnpm dlx ultracite check --type-aware --type-check",
     "compile": "tsc --noEmit",
-    "dev": "wxt",
-    "dev:firefox": "wxt -b firefox",
-    "fix": "pnpm dlx ultracite fix --type-aware --type-check",
+    "dev": "wxt --port 3001",
+    "dev:firefox": "wxt -b firefox --port 3001",
     "knip": "pnpm dlx knip",
     "postinstall": "wxt prepare",
     "zip": "wxt zip",

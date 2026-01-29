@@ -8,11 +8,10 @@ const config: KnipConfig = {
   ],
   ignore: ["src/components/ui/**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}"],
   ignoreDependencies: [
+    "@repo/shadcn-ui", // Workspace package with deep imports
     "@wxt-dev/module-react",
-    "lint-staged",
     "lucide-react",
-    "oxfmt",
-    "oxlint-tsgolint",
+    "vite", // vite/client types referenced in env.d.ts
   ],
   ignoreExportsUsedInFile: { interface: true, type: true },
   project: ["**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}"],

@@ -14,29 +14,29 @@ This example demonstrates how to integrate React 19+, Tailwind CSS v4+, and shad
    Open your terminal and run the following command to create a new WXT project with the React template:
 
    ```sh
-   bun x wxt@latest init
+   pnpm dlx wxt@latest init
    ```
 
-   The CLI will guide you through the project setup. Choose the `react` template and your preferred package manager. For this example, I use bun.
+   The CLI will guide you through the project setup. Choose the `react` template and your preferred package manager. For this example, I use pnpm.
 
    ```
    WXT 0.20.6
    ℹ Initializing new project
    ✔ Project Directory … react-shadcn
    ✔ Choose a template › react
-   ✔ Package Manager › bun
+   ✔ Package Manager › pnpm
    ✔ Downloading template
    ✨ WXT project created with the react template.
    Next steps:
      1. cd react-shadcn
-     2. bun install
+     2. pnpm install
    ```
 
 2. **Navigate to the project directory and install dependencies:**
 
    ```sh
    cd react-shadcn
-   bun install
+   pnpm install
    ```
 
 3. **Install Tailwind CSS and `@tailwindcss/vite`:**
@@ -44,7 +44,7 @@ This example demonstrates how to integrate React 19+, Tailwind CSS v4+, and shad
    You should follow the official Tailwind Vite installation [guide](https://tailwindcss.com/docs/installation/using-vite). As the time of creating this example, it asked to run the following command:
 
    ```sh
-   bun install tailwindcss @tailwindcss/vite
+   pnpm install tailwindcss @tailwindcss/vite
    ```
 
 4. **Configure Tailwind CSS in `wxt.config.ts`:**
@@ -116,7 +116,7 @@ This example demonstrates how to integrate React 19+, Tailwind CSS v4+, and shad
 
 9. **Configure `wxt.config.ts` for Alias Resolution:**
 
-   Update your `wxt.config.ts` to include an alias for resolving paths. Make sure to install `@types/node` for the `path` module: `bun add -D @types/node`
+   Update your `wxt.config.ts` to include an alias for resolving paths. Make sure to install `@types/node` for the `path` module: `pnpm add -D @types/node`
 
    ```ts
    import { defineConfig } from "wxt";
@@ -163,7 +163,7 @@ This example demonstrates how to integrate React 19+, Tailwind CSS v4+, and shad
     Run the Shadcn UI initialization command:
 
     ```sh
-    bun x shadcn-ui@latest init
+    pnpm dlx shadcn-ui@latest init
     ```
 
     Answer the prompts in the CLI to configure Shadcn UI according to your preferences (color scheme, etc.).
@@ -177,7 +177,7 @@ This example demonstrates how to integrate React 19+, Tailwind CSS v4+, and shad
     You can now add Shadcn UI components using the CLI:
 
     ```sh
-    bun x shadcn-ui@latest add button
+    pnpm dlx shadcn-ui@latest add button
     ```
 
     This will install the button component and its dependencies. Repeat this command for any other components you wish to use.
