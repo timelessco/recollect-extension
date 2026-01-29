@@ -30,6 +30,7 @@ jobs:
         run: pnpm turbo run check
 
       - name: Create Release PR or Publish
+        id: changesets
         uses: changesets/action@v1
         with:
           version: pnpm changeset version
@@ -38,3 +39,25 @@ jobs:
           title: "chore: version packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get Extension Version
+        id: extension-version
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          VERSION=$(echo '${{ steps.changesets.outputs.publishedPackages }}' | jq -r '.[] | select(.name == "recollect-extension") | .version')
+          if [[ -n "$VERSION" ]]; then
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            echo "found=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Zip
+        if: steps.extension-version.outputs.found == 'true'
+        working-directory: apps/extension
+        run: pnpm zip
+
+      - name: Upload to Release
+        if: steps.extension-version.outputs.found == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: recollect-extension@${{ steps.extension-version.outputs.version }}
+          files: apps/extension/.output/*.zip
