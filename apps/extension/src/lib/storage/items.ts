@@ -1,4 +1,4 @@
-import { storage } from "wxt/storage";
+import { storage } from "wxt/utils/storage";
 import type { SyncedCodesData, SyncLock, SyncState } from "./types";
 
 export const syncedPostCodes = storage.defineItem<SyncedCodesData>(
