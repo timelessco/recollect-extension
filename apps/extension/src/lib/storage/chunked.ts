@@ -2,15 +2,23 @@ import { browser } from "wxt/browser";
 
 const CHUNK_SIZE = 500;
 
+type StorageArea = "local" | "session";
+
 interface ChunkMetadata {
   totalChunks: number;
   totalItems: number;
 }
 
+function getStorage(area: StorageArea) {
+  return browser.storage[area];
+}
+
 export async function setChunkedArray<T>(
   keyPrefix: string,
-  items: T[]
+  items: T[],
+  area: StorageArea = "local"
 ): Promise<void> {
+  const storage = getStorage(area);
   const totalChunks = Math.ceil(items.length / CHUNK_SIZE);
   const data: Record<string, T[] | ChunkMetadata> = {};
 
@@ -23,12 +31,16 @@ export async function setChunkedArray<T>(
     );
   }
 
-  await browser.storage.local.set(data);
+  await storage.set(data);
 }
 
-export async function getChunkedArray<T>(keyPrefix: string): Promise<T[]> {
+export async function getChunkedArray<T>(
+  keyPrefix: string,
+  area: StorageArea = "local"
+): Promise<T[]> {
+  const storage = getStorage(area);
   const metaKey = `${keyPrefix}:meta`;
-  const metaResult = await browser.storage.local.get(metaKey);
+  const metaResult = await storage.get(metaKey);
 
   const meta = metaResult[metaKey] as ChunkMetadata | undefined;
   if (!meta) {
@@ -39,14 +51,18 @@ export async function getChunkedArray<T>(keyPrefix: string): Promise<T[]> {
     { length: meta.totalChunks },
     (_, i) => `${keyPrefix}:${i}`
   );
-  const chunks = await browser.storage.local.get(keys);
+  const chunks = await storage.get(keys);
 
   return keys.flatMap((key) => (chunks[key] as T[]) ?? []);
 }
 
-export async function clearChunkedArray(keyPrefix: string): Promise<void> {
+export async function clearChunkedArray(
+  keyPrefix: string,
+  area: StorageArea = "local"
+): Promise<void> {
+  const storage = getStorage(area);
   const metaKey = `${keyPrefix}:meta`;
-  const metaResult = await browser.storage.local.get(metaKey);
+  const metaResult = await storage.get(metaKey);
 
   const meta = metaResult[metaKey] as ChunkMetadata | undefined;
   if (!meta) {
@@ -58,5 +74,5 @@ export async function clearChunkedArray(keyPrefix: string): Promise<void> {
     ...Array.from({ length: meta.totalChunks }, (_, i) => `${keyPrefix}:${i}`),
   ];
 
-  await browser.storage.local.remove(keysToRemove);
+  await storage.remove(keysToRemove);
 }

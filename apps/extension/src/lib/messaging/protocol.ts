@@ -1,4 +1,5 @@
 import { defineExtensionMessaging } from "@webext-core/messaging";
+import type { RecollectBookmark } from "../instagram/types";
 import type { SyncState } from "../storage/types";
 
 interface ProtocolMap {
@@ -7,16 +8,17 @@ interface ProtocolMap {
   cancelSync(): void;
   getSyncState(): SyncState;
 
-  // Background -> Content Script (Phase 10)
+  // Background -> Content Script
   fetchSavedPosts(data: { cursor: string | null }): void;
   cancelFetch(): void;
 
-  // Content Script -> Background (Phase 10)
+  // Content Script -> Background
   postChunk(data: {
-    posts: unknown[];
+    posts: RecollectBookmark[];
     hasMore: boolean;
     cursor: string | null;
   }): void;
+  fetchComplete(data: { totalFetched: number }): void;
   fetchError(data: { type: string; message: string }): void;
 }
 

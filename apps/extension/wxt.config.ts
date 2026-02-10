@@ -11,5 +11,8 @@ export default defineConfig({
   },
   vite: () => ({
     plugins: [tailwindcss()],
+    ssr: {
+      noExternal: ["@webext-core/messaging"],
+    },
   }),
 });
