@@ -20,11 +20,7 @@
     "files.associations": {
       "*.svg": "html",
       ".env.*": "dotenv",
-      "*.json": "jsonc",
-      "package.json": "json",
-      ".all-contributorsrc": "json",
-      "*.tsx": "typescriptreact",
-      "*.jsx": "javascriptreact"
+      "*.code-workspace": "json"
     },
     "editor.defaultFormatter": "biomejs.biome",
     "editor.formatOnSave": true,
