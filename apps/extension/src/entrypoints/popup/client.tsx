@@ -1,27 +1,45 @@
 import { useAsync, useMountEffect } from "@react-hookz/web";
 
+import { InstagramSignInView } from "@/components/popup/instagram-sign-in-view";
 import { PopupSkeleton } from "@/components/popup/popup-skeleton";
 import { SignedInView } from "@/components/popup/signed-in-view";
 import { SignedOutView } from "@/components/popup/signed-out-view";
 import { checkAuthState } from "@/lib/auth";
+import { checkInstagramAuth } from "@/lib/instagram";
 
-type PopupState = "loading" | "signed-out" | "signed-in";
+type PopupState = "loading" | "no-recollect" | "no-instagram" | "ready";
+
+async function resolvePopupState(): Promise<PopupState> {
+  const recollectAuth = await checkAuthState();
+  if (!recollectAuth.isAuthenticated) {
+    return "no-recollect";
+  }
+
+  const instagramAuth = await checkInstagramAuth();
+  if (!instagramAuth.isAuthenticated) {
+    return "no-instagram";
+  }
+
+  return "ready";
+}
 
 function usePopupAuthState(): PopupState {
-  const [authResult, authActions] = useAsync(checkAuthState);
+  const [result, actions] = useAsync(resolvePopupState);
 
   useMountEffect(() => {
     // biome-ignore lint/complexity/noVoid: void marks fire-and-forget
-    void authActions.execute();
+    void actions.execute();
   });
 
-  if (authResult.status === "loading" || authResult.status === "not-executed") {
+  if (result.status === "loading" || result.status === "not-executed") {
     return "loading";
   }
-  if (authResult.status === "success" && authResult.result !== undefined) {
-    return authResult.result.isAuthenticated ? "signed-in" : "signed-out";
+
+  if (result.status === "success" && result.result !== undefined) {
+    return result.result;
   }
-  return "signed-out";
+
+  return "no-recollect";
 }
 
 export function Client() {
@@ -31,10 +49,13 @@ export function Client() {
     case "loading": {
       return <PopupSkeleton />;
     }
-    case "signed-out": {
+    case "no-recollect": {
       return <SignedOutView />;
     }
-    case "signed-in": {
+    case "no-instagram": {
+      return <InstagramSignInView />;
+    }
+    case "ready": {
       return <SignedInView />;
     }
     default: {
