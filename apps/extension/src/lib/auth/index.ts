@@ -114,6 +114,26 @@ async function saveDebugLog(
   });
 }
 
+export async function getAccessToken(): Promise<string | null> {
+  const authCookies = await fetchAuthCookies();
+  if (authCookies.length === 0) {
+    return null;
+  }
+
+  const baseName = extractBaseName(authCookies);
+  const tokenValue = combineChunks(baseName, authCookies);
+  if (!tokenValue) {
+    return null;
+  }
+
+  const session = parseSessionCookie(tokenValue);
+  if (!session?.accessToken) {
+    return null;
+  }
+
+  return session.accessToken;
+}
+
 export async function checkAuthState(): Promise<AuthState> {
   const startTime = performance.now();
   let authCookies: AuthCookie[] = [];

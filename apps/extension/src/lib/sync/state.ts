@@ -1,4 +1,4 @@
-import type { SyncState } from "../storage/types";
+import type { SyncResult, SyncState } from "../storage/types";
 
 export function createIdleState(): SyncState {
   return {
@@ -6,7 +6,27 @@ export function createIdleState(): SyncState {
     cursor: null,
     fetched: 0,
     uploaded: 0,
+    totalToUpload: 0,
     pauseReason: null,
+    lastSyncResult: null,
+  };
+}
+
+export function createUploadingState(
+  current: SyncState,
+  totalToUpload: number
+): SyncState {
+  return {
+    ...current,
+    status: "uploading",
+    totalToUpload,
+  };
+}
+
+export function createCompletedIdleState(result: SyncResult): SyncState {
+  return {
+    ...createIdleState(),
+    lastSyncResult: result,
   };
 }
 

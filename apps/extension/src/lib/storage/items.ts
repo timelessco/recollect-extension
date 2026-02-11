@@ -16,7 +16,9 @@ export const syncState = storage.defineItem<SyncState>(
       cursor: null,
       fetched: 0,
       uploaded: 0,
+      totalToUpload: 0,
       pauseReason: null,
+      lastSyncResult: null,
     },
   }
 );

@@ -28,12 +28,13 @@ export default defineBackground({
 
       const currentState = await syncState.getValue();
       await syncState.setValue({
-        ...currentState,
         status: "fetching",
         cursor: null,
         fetched: 0,
         uploaded: 0,
+        totalToUpload: 0,
         pauseReason: null,
+        lastSyncResult: null,
       });
 
       const tabs = await browser.tabs.query({
