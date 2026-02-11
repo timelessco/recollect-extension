@@ -8,10 +8,10 @@ import { acquireLock, releaseLock } from "@/lib/sync/lock";
 import {
   createErrorState,
   createIdleState,
+  createPausedState,
   updateProgress,
 } from "@/lib/sync/state";
-
-const FETCHED_POSTS_KEY = "recollect:fetchedPosts";
+import { executeUpload, FETCHED_POSTS_KEY } from "@/lib/sync/upload";
 
 export default defineBackground({
   type: "module",
@@ -60,8 +60,39 @@ export default defineBackground({
     });
 
     onMessage("cancelSync", async () => {
+      const currentState = await syncState.getValue();
+
+      if (currentState.status === "uploading") {
+        await syncState.setValue(createPausedState("cancelled", currentState));
+        return;
+      }
+
       await releaseLock();
       await syncState.setValue(createIdleState());
+    });
+
+    onMessage("resumeSync", async () => {
+      const currentState = await syncState.getValue();
+      if (currentState.status !== "paused") {
+        return { success: false, error: "Sync is not paused" };
+      }
+
+      const lockAcquired = await acquireLock();
+      if (!lockAcquired) {
+        return { success: false, error: "Sync already in progress" };
+      }
+
+      try {
+        await executeUpload();
+      } catch (error) {
+        const state = await syncState.getValue();
+        const message =
+          error instanceof Error ? error.message : "Unknown upload error";
+        await syncState.setValue(createErrorState(message, state));
+        await releaseLock();
+      }
+
+      return { success: true };
     });
 
     onMessage("postChunk", async (message) => {
@@ -82,8 +113,15 @@ export default defineBackground({
     });
 
     onMessage("fetchComplete", async () => {
-      await syncState.setValue(createIdleState());
-      await releaseLock();
+      try {
+        await executeUpload();
+      } catch (error) {
+        const currentState = await syncState.getValue();
+        const message =
+          error instanceof Error ? error.message : "Unknown upload error";
+        await syncState.setValue(createErrorState(message, currentState));
+        await releaseLock();
+      }
     });
 
     onMessage("fetchError", async (message) => {

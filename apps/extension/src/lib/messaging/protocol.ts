@@ -6,6 +6,7 @@ interface ProtocolMap {
   // Popup -> Background
   startSync(): { success: true } | { success: false; error: string };
   cancelSync(): void;
+  resumeSync(): { success: true } | { success: false; error: string };
   getSyncState(): SyncState;
 
   // Background -> Content Script
