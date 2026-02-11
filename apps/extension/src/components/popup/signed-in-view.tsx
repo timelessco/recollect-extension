@@ -5,7 +5,7 @@ import { browser } from "wxt/browser";
 
 import { config } from "@/lib/config";
 import { sendMessage } from "@/lib/messaging/protocol";
-import { syncState } from "@/lib/storage/items";
+import { syncedPostCodes, syncState } from "@/lib/storage/items";
 import type { SyncState } from "@/lib/storage/types";
 
 import { PopupHeader } from "./popup-header";
@@ -32,6 +32,39 @@ function useSyncState(): SyncState {
   }, []);
 
   return state;
+}
+
+function formatTimeAgo(timestamp: number): string {
+  const seconds = Math.floor((Date.now() - timestamp) / 1000);
+
+  if (seconds < 60) {
+    return "just now";
+  }
+
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) {
+    return `${minutes} ${minutes === 1 ? "minute" : "minutes"} ago`;
+  }
+
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) {
+    return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
+  }
+
+  const days = Math.floor(hours / 24);
+  return `${days} ${days === 1 ? "day" : "days"} ago`;
+}
+
+function useLastSyncedAt(): number {
+  const [lastSyncedAt, setLastSyncedAt] = useState(0);
+
+  useEffect(() => {
+    syncedPostCodes.getValue().then((data) => {
+      setLastSyncedAt(data.lastSyncedAt);
+    });
+  }, []);
+
+  return lastSyncedAt;
 }
 
 function useCompletionMessage(state: SyncState): string | null {
@@ -109,7 +142,13 @@ function ProgressDisplay({
   );
 }
 
-function IdleView({ completionMessage }: { completionMessage: string | null }) {
+function IdleView({
+  completionMessage,
+  lastSyncedAt,
+}: {
+  completionMessage: string | null;
+  lastSyncedAt: number;
+}) {
   if (completionMessage) {
     return (
       <p className="text-center text-muted-foreground text-sm">
@@ -119,9 +158,16 @@ function IdleView({ completionMessage }: { completionMessage: string | null }) {
   }
 
   return (
-    <Button className="w-full" onClick={handleStartSync} size="lg">
-      Sync Instagram
-    </Button>
+    <div className="space-y-2">
+      <Button className="w-full" onClick={handleStartSync} size="lg">
+        Sync Instagram
+      </Button>
+      {lastSyncedAt > 0 && (
+        <p className="text-center text-muted-foreground text-xs">
+          Last synced: {formatTimeAgo(lastSyncedAt)}
+        </p>
+      )}
+    </div>
   );
 }
 
@@ -181,12 +227,18 @@ function ErrorView({ reason }: { reason: string | null }) {
 
 export function SignedInView() {
   const state = useSyncState();
+  const lastSyncedAt = useLastSyncedAt();
   const completionMessage = useCompletionMessage(state);
 
   const renderContent = useCallback(() => {
     switch (state.status) {
       case "idle": {
-        return <IdleView completionMessage={completionMessage} />;
+        return (
+          <IdleView
+            completionMessage={completionMessage}
+            lastSyncedAt={lastSyncedAt}
+          />
+        );
       }
       case "fetching": {
         return (
@@ -211,10 +263,12 @@ export function SignedInView() {
         return <ErrorView reason={state.pauseReason} />;
       }
       default: {
-        return <IdleView completionMessage={null} />;
+        return (
+          <IdleView completionMessage={null} lastSyncedAt={lastSyncedAt} />
+        );
       }
     }
-  }, [state, completionMessage]);
+  }, [state, completionMessage, lastSyncedAt]);
 
   return (
     <div className="w-72 space-y-4 p-4">
