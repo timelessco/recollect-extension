@@ -10,7 +10,7 @@ interface ProtocolMap {
   getSyncState(): SyncState;
 
   // Background -> Content Script
-  fetchSavedPosts(data: { cursor: string | null }): void;
+  fetchSavedPosts(data: { cursor: string | null; syncedCodes: string[] }): void;
   cancelFetch(): void;
 
   // Content Script -> Background

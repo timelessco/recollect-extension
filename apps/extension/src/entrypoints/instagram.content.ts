@@ -12,7 +12,6 @@ import type {
   RecollectBookmark,
 } from "@/lib/instagram/types";
 import { onMessage, sendMessage } from "@/lib/messaging/protocol";
-import { syncedPostCodes } from "@/lib/storage/items";
 
 function filterNewItems(
   items: InstagramMediaItem[],
@@ -44,11 +43,11 @@ function classifyError(error: unknown): { type: string; message: string } {
 
 async function executeFetch(
   cursor: string | null,
+  syncedCodes: string[],
   ctx: ContentScriptContext,
   isCancelled: () => boolean
 ): Promise<void> {
-  const syncedData = await syncedPostCodes.getValue();
-  const syncedCodesSet = new Set(syncedData.codes);
+  const syncedCodesSet = new Set(syncedCodes);
   const collectionMap = await fetchCollections();
 
   let currentCursor = cursor;
@@ -99,7 +98,12 @@ export default defineContentScript({
     onMessage("fetchSavedPosts", async (message) => {
       cancelled = false;
       try {
-        await executeFetch(message.data.cursor, ctx, () => cancelled);
+        await executeFetch(
+          message.data.cursor,
+          message.data.syncedCodes,
+          ctx,
+          () => cancelled
+        );
       } catch (error) {
         await sendMessage("fetchError", classifyError(error));
       }

@@ -3,7 +3,7 @@ import { defineBackground } from "wxt/utils/define-background";
 import type { RecollectBookmark } from "@/lib/instagram/types";
 import { onMessage, sendMessage } from "@/lib/messaging/protocol";
 import { getChunkedArray, setChunkedArray } from "@/lib/storage/chunked";
-import { syncState } from "@/lib/storage/items";
+import { syncedPostCodes, syncState } from "@/lib/storage/items";
 import { acquireLock, releaseLock } from "@/lib/sync/lock";
 import {
   createErrorState,
@@ -50,9 +50,10 @@ export default defineBackground({
         };
       }
 
+      const syncedData = await syncedPostCodes.getValue();
       await sendMessage(
         "fetchSavedPosts",
-        { cursor: currentState.cursor },
+        { cursor: currentState.cursor, syncedCodes: syncedData.codes },
         tabs[0].id
       );
 
