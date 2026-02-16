@@ -37,6 +37,7 @@ export async function executeUpload(): Promise<void> {
   );
 
   if (newBookmarks.length === 0) {
+    await syncedPostCodes.setValue({ ...syncedData, lastSyncedAt: Date.now() });
     await syncState.setValue(createCompletedIdleState({ type: "up-to-date" }));
     await clearChunkedArray(FETCHED_POSTS_KEY, "session");
     await releaseLock();
