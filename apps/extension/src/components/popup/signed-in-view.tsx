@@ -84,6 +84,12 @@ function useCompletionMessage(state: SyncState): string | null {
 
     setMessage(text);
 
+    syncState
+      .getValue()
+      .then((current) =>
+        syncState.setValue({ ...current, lastSyncResult: null })
+      );
+
     timerRef.current = setTimeout(() => {
       setMessage(null);
     }, 3000);
