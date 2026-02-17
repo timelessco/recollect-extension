@@ -9,6 +9,7 @@ export function createIdleState(): SyncState {
     totalToUpload: 0,
     pauseReason: null,
     lastSyncResult: null,
+    retryInfo: null,
   };
 }
 
@@ -38,6 +39,7 @@ export function createPausedState(
     ...current,
     status: "paused",
     pauseReason: reason,
+    retryInfo: null,
   };
 }
 
@@ -49,6 +51,7 @@ export function createErrorState(
     ...current,
     status: "error",
     pauseReason: reason,
+    retryInfo: null,
   };
 }
 

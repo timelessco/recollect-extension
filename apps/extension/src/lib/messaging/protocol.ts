@@ -20,7 +20,14 @@ interface ProtocolMap {
     cursor: string | null;
   }): void;
   fetchComplete(data: { totalFetched: number }): void;
-  fetchError(data: { type: string; message: string }): void;
+  fetchError(data: {
+    type: "rate_limit" | "auth" | "network" | "unknown";
+    message: string;
+  }): void;
+
+  // Content Script -> Background (retry lifecycle)
+  retryWaiting(data: { attempt: number; retryAt: number }): void;
+  retryResumed(): void;
 }
 
 export const { sendMessage, onMessage } =

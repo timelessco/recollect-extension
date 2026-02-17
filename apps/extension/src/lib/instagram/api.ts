@@ -4,6 +4,16 @@ import type {
   SavedPostsPage,
 } from "./types";
 
+export class InstagramApiError extends Error {
+  readonly statusCode: number;
+
+  constructor(statusCode: number) {
+    super(`Instagram API error ${statusCode}`);
+    this.name = "InstagramApiError";
+    this.statusCode = statusCode;
+  }
+}
+
 const IG_APP_ID = "936619743392459";
 export const BASE_DELAY_MS = 1500;
 export const COLLECTION_DELAY_MS = 500;
@@ -80,8 +90,7 @@ export async function fetchSavedPostsPage(
   });
 
   if (!response.ok) {
-    const text = await response.text();
-    throw new Error(`Instagram API error ${response.status}: ${text}`);
+    throw new InstagramApiError(response.status);
   }
 
   const data = (await response.json()) as SavedPostsResponse;
@@ -127,8 +136,7 @@ export async function fetchCollections(): Promise<CollectionMap> {
     );
 
     if (!response.ok) {
-      const text = await response.text();
-      throw new Error(`Instagram API error ${response.status}: ${text}`);
+      throw new InstagramApiError(response.status);
     }
 
     const data = (await response.json()) as CollectionsResponse;

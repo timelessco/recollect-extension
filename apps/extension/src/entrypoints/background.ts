@@ -35,6 +35,7 @@ export default defineBackground({
         totalToUpload: 0,
         pauseReason: null,
         lastSyncResult: null,
+        retryInfo: null,
       });
 
       const tabs = await browser.tabs.query({
