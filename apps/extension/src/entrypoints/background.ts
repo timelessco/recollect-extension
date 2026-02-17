@@ -127,10 +127,34 @@ export default defineBackground({
     });
 
     onMessage("fetchError", async (message) => {
-      const { message: errorMessage } = message.data;
+      const { type, message: errorMessage } = message.data;
       const currentState = await syncState.getValue();
-      await syncState.setValue(createErrorState(errorMessage, currentState));
+
+      if (type === "auth") {
+        await syncState.setValue(
+          createPausedState("instagram_auth_expired", currentState)
+        );
+      } else {
+        await syncState.setValue(createErrorState(errorMessage, currentState));
+      }
       await releaseLock();
+    });
+
+    onMessage("retryWaiting", async (message) => {
+      const { attempt, retryAt } = message.data;
+      const currentState = await syncState.getValue();
+      await syncState.setValue({
+        ...currentState,
+        retryInfo: { attempt, retryAt },
+      });
+    });
+
+    onMessage("retryResumed", async () => {
+      const currentState = await syncState.getValue();
+      await syncState.setValue({
+        ...currentState,
+        retryInfo: null,
+      });
     });
 
     console.log("[Recollect] Background service worker initialized");

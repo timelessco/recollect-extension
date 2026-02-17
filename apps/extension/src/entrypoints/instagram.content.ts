@@ -5,11 +5,13 @@ import {
   delay,
   fetchCollections,
   fetchSavedPostsPage,
+  InstagramApiError,
 } from "@/lib/instagram/api";
 import { transformToBookmark } from "@/lib/instagram/transform";
 import type {
   InstagramMediaItem,
   RecollectBookmark,
+  SavedPostsPage,
 } from "@/lib/instagram/types";
 import { onMessage, sendMessage } from "@/lib/messaging/protocol";
 
@@ -31,14 +33,75 @@ function filterNewItems(
   return { newItems, boundaryHit };
 }
 
-function classifyError(error: unknown): { type: string; message: string } {
-  const isApiError =
-    error instanceof Error && error.message.startsWith("Instagram API error");
+type ErrorType = "rate_limit" | "auth" | "network" | "unknown";
 
+function classifyError(error: unknown): { type: ErrorType; message: string } {
+  if (error instanceof InstagramApiError) {
+    if (error.statusCode === 429) {
+      return { type: "rate_limit", message: "Too many requests" };
+    }
+    if (error.statusCode === 401) {
+      return { type: "auth", message: "Instagram needs you to sign in" };
+    }
+    return { type: "unknown", message: error.message };
+  }
+  if (error instanceof TypeError) {
+    return { type: "network", message: "Connection lost" };
+  }
   return {
-    type: isApiError ? "api" : "unknown",
+    type: "unknown",
     message: error instanceof Error ? error.message : String(error),
   };
+}
+
+const RETRY_DELAYS = [30_000, 60_000, 120_000];
+
+function interruptibleDelay(
+  ms: number,
+  isCancelled: () => boolean
+): Promise<boolean> {
+  return new Promise((resolve) => {
+    const timer = setTimeout(() => resolve(true), ms);
+    const check = setInterval(() => {
+      if (isCancelled()) {
+        clearTimeout(timer);
+        clearInterval(check);
+        resolve(false);
+      }
+    }, 500);
+    setTimeout(() => clearInterval(check), ms + 100);
+  });
+}
+
+async function fetchWithRetry(
+  currentCursor: string | null,
+  isCancelled: () => boolean
+): Promise<SavedPostsPage | null> {
+  for (let attempt = 0; attempt <= RETRY_DELAYS.length; attempt++) {
+    try {
+      return await fetchSavedPostsPage(currentCursor);
+    } catch (error) {
+      const isRetryable =
+        (error instanceof InstagramApiError && error.statusCode === 429) ||
+        error instanceof TypeError;
+
+      if (!isRetryable || attempt >= RETRY_DELAYS.length) {
+        throw error;
+      }
+
+      const delayMs = RETRY_DELAYS[attempt];
+      const retryAt = Date.now() + delayMs;
+      await sendMessage("retryWaiting", { attempt: attempt + 1, retryAt });
+
+      const waited = await interruptibleDelay(delayMs, isCancelled);
+      if (!waited) {
+        return null;
+      }
+
+      await sendMessage("retryResumed", undefined);
+    }
+  }
+  return null;
 }
 
 async function executeFetch(
@@ -58,7 +121,11 @@ async function executeFetch(
       break;
     }
 
-    const page = await fetchSavedPostsPage(currentCursor);
+    const page = await fetchWithRetry(currentCursor, isCancelled);
+    if (!page) {
+      return;
+    }
+
     const { newItems, boundaryHit } = filterNewItems(
       page.items,
       syncedCodesSet

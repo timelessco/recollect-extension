@@ -18,6 +18,7 @@ const IDLE_FALLBACK: SyncState = {
   totalToUpload: 0,
   pauseReason: null,
   lastSyncResult: null,
+  retryInfo: null,
 };
 
 function useSyncState(): SyncState {
@@ -124,6 +125,47 @@ function openRecollectTab() {
   void browser.tabs.create({ url: config.recollectUrl });
 }
 
+function openInstagramTab() {
+  // biome-ignore lint/complexity/noVoid: void marks fire-and-forget
+  void browser.tabs.create({ url: "https://www.instagram.com/" });
+}
+
+function RetryCountdown({
+  retryInfo,
+  onCancel,
+}: {
+  retryInfo: { attempt: number; retryAt: number };
+  onCancel: () => void;
+}) {
+  const [remaining, setRemaining] = useState(() =>
+    Math.max(0, Math.ceil((retryInfo.retryAt - Date.now()) / 1000))
+  );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRemaining(
+        Math.max(0, Math.ceil((retryInfo.retryAt - Date.now()) / 1000))
+      );
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [retryInfo.retryAt]);
+
+  return (
+    <div className="space-y-2 text-center">
+      <p className="text-muted-foreground text-sm">
+        Connection issue, retrying... {remaining}s
+      </p>
+      <button
+        className="text-muted-foreground text-xs hover:underline"
+        onClick={onCancel}
+        type="button"
+      >
+        Cancel
+      </button>
+    </div>
+  );
+}
+
 function ProgressDisplay({
   label,
   onCancel,
@@ -178,6 +220,28 @@ function IdleView({
 }
 
 function PausedView({ pauseReason }: { pauseReason: string | null }) {
+  if (pauseReason === "instagram_auth_expired") {
+    return (
+      <div className="space-y-2">
+        <p className="text-center text-muted-foreground text-sm">
+          Instagram needs you to sign in again.
+        </p>
+        <Button className="w-full" onClick={openInstagramTab} size="lg">
+          Open Instagram
+        </Button>
+        <div className="text-center">
+          <button
+            className="text-muted-foreground text-xs hover:underline"
+            onClick={handleStartSync}
+            type="button"
+          >
+            Try again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   if (pauseReason === "recollect_auth_expired") {
     return (
       <div className="space-y-2">
@@ -222,10 +286,10 @@ function ErrorView({ reason }: { reason: string | null }) {
   return (
     <div className="space-y-2">
       <p className="text-center text-destructive text-sm">
-        {reason ?? "An error occurred"}
+        {reason ?? "Something went wrong"}
       </p>
       <Button className="w-full" onClick={handleStartSync} size="lg">
-        Try again
+        Retry
       </Button>
     </div>
   );
@@ -247,6 +311,14 @@ export function SignedInView() {
         );
       }
       case "fetching": {
+        if (state.retryInfo) {
+          return (
+            <RetryCountdown
+              onCancel={handleCancelSync}
+              retryInfo={state.retryInfo}
+            />
+          );
+        }
         return (
           <ProgressDisplay
             label={`Fetching: ${state.fetched} posts...`}
