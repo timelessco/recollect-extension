@@ -25,6 +25,9 @@ interface ProtocolMap {
     message: string;
   }): void;
 
+  // Content Script -> Background (lifecycle)
+  contentScriptReady(): void;
+
   // Content Script -> Background (retry lifecycle)
   retryWaiting(data: { attempt: number; retryAt: number }): void;
   retryResumed(): void;

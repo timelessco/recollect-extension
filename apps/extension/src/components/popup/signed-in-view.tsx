@@ -19,6 +19,7 @@ const IDLE_FALLBACK: SyncState = {
   pauseReason: null,
   lastSyncResult: null,
   retryInfo: null,
+  startedAt: 0,
 };
 
 function useSyncState(): SyncState {

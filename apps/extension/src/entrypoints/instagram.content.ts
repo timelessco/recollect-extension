@@ -160,6 +160,17 @@ export default defineContentScript({
   runAt: "document_idle",
 
   main(ctx: ContentScriptContext) {
+    const GUARD_KEY = "__recollect_content_script_loaded__";
+    const win = window as unknown as Record<string, unknown>;
+    if (win[GUARD_KEY]) {
+      return;
+    }
+    win[GUARD_KEY] = true;
+
+    sendMessage("contentScriptReady", undefined).catch((_) => {
+      // Background may not be ready yet on first install
+    });
+
     let cancelled = false;
 
     onMessage("fetchSavedPosts", async (message) => {

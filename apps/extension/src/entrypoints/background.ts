@@ -42,12 +42,65 @@ function formatSyncResultMessage(result: {
     : "Already up to date";
 }
 
+const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
+
+let contentScriptReadyResolver: ((tabId: number) => void) | null = null;
+
+function waitForContentScriptReady(
+  expectedTabId: number,
+  timeoutMs: number
+): Promise<boolean> {
+  return new Promise((resolve) => {
+    const timer = setTimeout(() => {
+      contentScriptReadyResolver = null;
+      resolve(false);
+    }, timeoutMs);
+
+    contentScriptReadyResolver = (tabId) => {
+      if (tabId === expectedTabId) {
+        clearTimeout(timer);
+        resolve(true);
+      }
+    };
+  });
+}
+
 export default defineBackground({
   type: "module",
   main() {
     browser.notifications.onClicked.addListener((notificationId) => {
       browser.notifications.clear(notificationId);
       browser.tabs.create({ url: config.recollectUrl });
+    });
+
+    browser.runtime.onInstalled.addListener(async ({ reason }) => {
+      if (reason !== "install" && reason !== "update") {
+        return;
+      }
+
+      const instagramTabs = await browser.tabs.query({
+        url: "*://*.instagram.com/*",
+      });
+      for (const tab of instagramTabs) {
+        if (tab.id == null) {
+          continue;
+        }
+        try {
+          await browser.scripting.executeScript({
+            target: { tabId: tab.id },
+            files: ["/content-scripts/instagram.js"],
+          });
+        } catch {
+          // Tab may not be accessible (discarded, chrome:// page, etc.)
+        }
+      }
+    });
+
+    onMessage("contentScriptReady", ({ sender }) => {
+      if (sender?.tab?.id != null && contentScriptReadyResolver) {
+        contentScriptReadyResolver(sender.tab.id);
+        contentScriptReadyResolver = null;
+      }
     });
 
     onMessage("getSyncState", async () => {
@@ -70,26 +123,56 @@ export default defineBackground({
         pauseReason: null,
         lastSyncResult: null,
         retryInfo: null,
+        startedAt: Date.now(),
       });
 
       const tabs = await browser.tabs.query({
         url: "*://*.instagram.com/*",
       });
 
-      if (tabs.length === 0 || tabs[0].id == null) {
-        await releaseLock();
-        await syncState.setValue(createIdleState());
-        return {
-          success: false,
-          error: "Open Instagram in a tab first",
-        };
+      let tabId: number;
+
+      if (tabs.length > 0 && tabs[0].id != null) {
+        tabId = tabs[0].id;
+      } else {
+        const newTab = await browser.tabs.create({
+          url: "https://www.instagram.com/",
+          active: false,
+        });
+
+        if (newTab.id == null) {
+          await releaseLock();
+          await syncState.setValue(
+            createErrorState(
+              "Failed to create Instagram tab",
+              createIdleState()
+            )
+          );
+          return { success: false, error: "Failed to create tab" };
+        }
+
+        tabId = newTab.id;
+        const ready = await waitForContentScriptReady(tabId, 15_000);
+        if (!ready) {
+          await releaseLock();
+          await syncState.setValue(
+            createErrorState(
+              "Instagram didn't load. Check your connection.",
+              createIdleState()
+            )
+          );
+          return {
+            success: false,
+            error: "Instagram tab timeout",
+          };
+        }
       }
 
       const syncedData = await syncedPostCodes.getValue();
       await sendMessage(
         "fetchSavedPosts",
         { cursor: currentState.cursor, syncedCodes: syncedData.codes },
-        tabs[0].id
+        tabId
       );
 
       return { success: true };
@@ -111,6 +194,17 @@ export default defineBackground({
       const currentState = await syncState.getValue();
       if (currentState.status !== "paused") {
         return { success: false, error: "Sync is not paused" };
+      }
+
+      if (
+        currentState.startedAt > 0 &&
+        Date.now() - currentState.startedAt > TWENTY_FOUR_HOURS
+      ) {
+        await syncState.setValue(createIdleState());
+        return {
+          success: false,
+          error: "Sync expired. Please start a new sync.",
+        };
       }
 
       const lockAcquired = await acquireLock();

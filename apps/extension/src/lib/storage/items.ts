@@ -20,6 +20,7 @@ export const syncState = storage.defineItem<SyncState>(
       pauseReason: null,
       lastSyncResult: null,
       retryInfo: null,
+      startedAt: 0,
     },
   }
 );

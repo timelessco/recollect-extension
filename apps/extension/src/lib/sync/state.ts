@@ -10,6 +10,7 @@ export function createIdleState(): SyncState {
     pauseReason: null,
     lastSyncResult: null,
     retryInfo: null,
+    startedAt: 0,
   };
 }
 

@@ -18,6 +18,7 @@ export interface SyncState {
   pauseReason: string | null;
   lastSyncResult: SyncResult | null;
   retryInfo: RetryInfo | null;
+  startedAt: number;
 }
 
 export interface SyncedCodesData {
