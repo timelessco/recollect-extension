@@ -1,5 +1,6 @@
 import { browser } from "wxt/browser";
 import { defineBackground } from "wxt/utils/define-background";
+import { config } from "@/lib/config";
 import type { RecollectBookmark } from "@/lib/instagram/types";
 import { onMessage, sendMessage } from "@/lib/messaging/protocol";
 import { getChunkedArray, setChunkedArray } from "@/lib/storage/chunked";
@@ -13,9 +14,42 @@ import {
 } from "@/lib/sync/state";
 import { executeUpload, FETCHED_POSTS_KEY } from "@/lib/sync/upload";
 
+async function isPopupOpen(): Promise<boolean> {
+  const contexts = await browser.runtime.getContexts({
+    contextTypes: ["POPUP"],
+  });
+  return contexts.length > 0;
+}
+
+async function notifySyncResult(message: string): Promise<void> {
+  if (await isPopupOpen()) {
+    return;
+  }
+  await browser.notifications.create("sync-result", {
+    type: "basic",
+    iconUrl: browser.runtime.getURL("/icon/128.png"),
+    title: "Recollect Sync",
+    message,
+  });
+}
+
+function formatSyncResultMessage(result: {
+  type: string;
+  syncedCount?: number;
+}): string {
+  return result.type === "success"
+    ? `Synced ${result.syncedCount} new posts`
+    : "Already up to date";
+}
+
 export default defineBackground({
   type: "module",
   main() {
+    browser.notifications.onClicked.addListener((notificationId) => {
+      browser.notifications.clear(notificationId);
+      browser.tabs.create({ url: config.recollectUrl });
+    });
+
     onMessage("getSyncState", async () => {
       return await syncState.getValue();
     });
@@ -86,11 +120,18 @@ export default defineBackground({
 
       try {
         await executeUpload();
+        const resultState = await syncState.getValue();
+        if (resultState.lastSyncResult) {
+          await notifySyncResult(
+            formatSyncResultMessage(resultState.lastSyncResult)
+          );
+        }
       } catch (error) {
         const state = await syncState.getValue();
-        const message =
+        const errorMsg =
           error instanceof Error ? error.message : "Unknown upload error";
-        await syncState.setValue(createErrorState(message, state));
+        await syncState.setValue(createErrorState(errorMsg, state));
+        await notifySyncResult(errorMsg);
         await releaseLock();
       }
 
@@ -117,11 +158,18 @@ export default defineBackground({
     onMessage("fetchComplete", async () => {
       try {
         await executeUpload();
+        const resultState = await syncState.getValue();
+        if (resultState.lastSyncResult) {
+          await notifySyncResult(
+            formatSyncResultMessage(resultState.lastSyncResult)
+          );
+        }
       } catch (error) {
         const currentState = await syncState.getValue();
-        const message =
+        const errorMsg =
           error instanceof Error ? error.message : "Unknown upload error";
-        await syncState.setValue(createErrorState(message, currentState));
+        await syncState.setValue(createErrorState(errorMsg, currentState));
+        await notifySyncResult(errorMsg);
         await releaseLock();
       }
     });
@@ -134,8 +182,10 @@ export default defineBackground({
         await syncState.setValue(
           createPausedState("instagram_auth_expired", currentState)
         );
+        await notifySyncResult("Instagram needs you to sign in");
       } else {
         await syncState.setValue(createErrorState(errorMessage, currentState));
+        await notifySyncResult(errorMessage);
       }
       await releaseLock();
     });
