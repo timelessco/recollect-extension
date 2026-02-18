@@ -139,7 +139,6 @@ async function executeFetch(
 
       await sendMessage("postChunk", {
         posts: bookmarks,
-        hasMore: page.hasMore && !boundaryHit,
         cursor: page.nextCursor,
       });
     }

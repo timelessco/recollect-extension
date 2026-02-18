@@ -3,7 +3,7 @@ import type { RecollectBookmark } from "@/lib/instagram/types";
 import { RecollectAuthError, uploadBatch } from "@/lib/recollect/api";
 import { clearChunkedArray, getChunkedArray } from "@/lib/storage/chunked";
 import { syncedPostCodes, syncState } from "@/lib/storage/items";
-import { releaseLock } from "@/lib/sync/lock";
+import { releaseLock, startHeartbeat, stopHeartbeat } from "@/lib/sync/lock";
 import {
   createCompletedIdleState,
   createPausedState,
@@ -50,51 +50,58 @@ export async function executeUpload(): Promise<void> {
   );
 
   let uploadedSoFar = 0;
+  const heartbeatId = startHeartbeat();
 
-  for (let i = 0; i < newBookmarks.length; i += BATCH_SIZE) {
-    const batch = newBookmarks.slice(i, i + BATCH_SIZE);
+  try {
+    for (let i = 0; i < newBookmarks.length; i += BATCH_SIZE) {
+      const batch = newBookmarks.slice(i, i + BATCH_SIZE);
 
-    const token = await getAccessToken();
-    if (!token) {
-      const state = await syncState.getValue();
-      await syncState.setValue(
-        createPausedState("recollect_auth_expired", state)
-      );
-      return;
-    }
-
-    try {
-      await uploadBatch(batch, token);
-    } catch (error) {
-      if (error instanceof RecollectAuthError) {
+      const token = await getAccessToken();
+      if (!token) {
         const state = await syncState.getValue();
         await syncState.setValue(
           createPausedState("recollect_auth_expired", state)
         );
+        await releaseLock();
         return;
       }
-      throw error;
+
+      try {
+        await uploadBatch(batch, token);
+      } catch (error) {
+        if (error instanceof RecollectAuthError) {
+          const state = await syncState.getValue();
+          await syncState.setValue(
+            createPausedState("recollect_auth_expired", state)
+          );
+          await releaseLock();
+          return;
+        }
+        throw error;
+      }
+
+      const batchCodes = batch.map((b) => extractCodeFromUrl(b.url));
+      const currentCodes = await syncedPostCodes.getValue();
+      await syncedPostCodes.setValue({
+        ...currentCodes,
+        codes: [...currentCodes.codes, ...batchCodes],
+        lastSyncedAt: Date.now(),
+      });
+
+      uploadedSoFar += batch.length;
+      const state = await syncState.getValue();
+      await syncState.setValue(updateProgress(state, undefined, uploadedSoFar));
     }
 
-    const batchCodes = batch.map((b) => extractCodeFromUrl(b.url));
-    const currentCodes = await syncedPostCodes.getValue();
-    await syncedPostCodes.setValue({
-      ...currentCodes,
-      codes: [...currentCodes.codes, ...batchCodes],
-      lastSyncedAt: Date.now(),
-    });
-
-    uploadedSoFar += batch.length;
-    const state = await syncState.getValue();
-    await syncState.setValue(updateProgress(state, undefined, uploadedSoFar));
+    await clearChunkedArray(FETCHED_POSTS_KEY, "session");
+    await syncState.setValue(
+      createCompletedIdleState({
+        type: "success",
+        syncedCount: uploadedSoFar,
+      })
+    );
+    await releaseLock();
+  } finally {
+    stopHeartbeat(heartbeatId);
   }
-
-  await clearChunkedArray(FETCHED_POSTS_KEY, "session");
-  await syncState.setValue(
-    createCompletedIdleState({
-      type: "success",
-      syncedCount: uploadedSoFar,
-    })
-  );
-  await releaseLock();
 }

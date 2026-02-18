@@ -103,10 +103,6 @@ export default defineBackground({
       }
     });
 
-    onMessage("getSyncState", async () => {
-      return await syncState.getValue();
-    });
-
     onMessage("startSync", async () => {
       const lockAcquired = await acquireLock();
       if (!lockAcquired) {
@@ -311,7 +307,5 @@ export default defineBackground({
         retryInfo: null,
       });
     });
-
-    console.log("[Recollect] Background service worker initialized");
   },
 });
