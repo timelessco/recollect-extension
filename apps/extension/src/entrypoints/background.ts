@@ -186,6 +186,17 @@ export default defineBackground({
         return;
       }
 
+      const tabs = await browser.tabs.query({
+        url: "*://*.instagram.com/*",
+      });
+      for (const tab of tabs) {
+        if (tab.id != null) {
+          await sendMessage("cancelFetch", undefined, tab.id).catch(
+            () => undefined
+          );
+        }
+      }
+
       await releaseLock();
       await syncState.setValue(createIdleState());
     });
