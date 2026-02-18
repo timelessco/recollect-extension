@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.1
+
+### Patch Changes
+
+- [`165f48d`](https://github.com/timelessco/recollect-extension/commit/165f48d68372e36f0112155a2e139b9540fe732f) Thanks [@navin-moorthy](https://github.com/navin-moorthy)! - **What's better**
+  - Long-running syncs are more reliable — large libraries no longer risk losing sync protection mid-upload
+  - Sync recovers faster after Recollect session expires — lock is properly freed for the next attempt
+
 ## 0.3.0
 
 ### Minor Changes
