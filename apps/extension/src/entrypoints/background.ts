@@ -25,7 +25,7 @@ async function notifySyncResult(message: string): Promise<void> {
   if (await isPopupOpen()) {
     return;
   }
-  await browser.notifications.create("sync-result", {
+  await browser.notifications.create(`sync-${Date.now()}`, {
     type: "basic",
     iconUrl: browser.runtime.getURL("/icon/128.png"),
     title: "Recollect Sync",
