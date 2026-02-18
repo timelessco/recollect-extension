@@ -44,3 +44,6 @@ lerna-debug.log*
 # Project specific
 _plans
 .planning
+
+# Claude Code
+.claude/settings.local.json
